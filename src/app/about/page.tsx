@@ -28,7 +28,7 @@ export default function About() {
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               About{' '}
               <span className="bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
-                Heart & Hand
+                Heart &amp; Hand
               </span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -47,7 +47,7 @@ export default function About() {
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 <p>
-                  Heart & Hand was born from a simple belief: that art has the power to transform 
+                  Heart &amp; Hand was born from a simple belief: that art has the power to transform 
                   ordinary moments into magical memories. What started as a hobby painting faces 
                   at local community events has grown into a thriving business that brings joy 
                   to hundreds of families across the region.
@@ -59,7 +59,7 @@ export default function About() {
                   experience is both beautiful and safe.
                 </p>
                 <p>
-                  Whether it's a child's birthday party, a cultural festival, or a corporate event, 
+                  Whether it&apos;s a child&apos;s birthday party, a cultural festival, or a corporate event, 
                   we pour our heart into every design and put our hands to work creating art that 
                   brings smiles to faces of all ages.
                 </p>
@@ -139,7 +139,7 @@ export default function About() {
           >
             <h2 className="text-3xl font-bold mb-4">Ready to Add Magic to Your Event?</h2>
             <p className="text-xl mb-8 opacity-90">
-              Let's create beautiful memories together with our artistic services
+              Let&apos;s create beautiful memories together with our artistic services
             </p>
             <motion.a
               href="/contact"

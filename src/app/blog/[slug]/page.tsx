@@ -1,9 +1,20 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Navigation } from '@/components/Navigation'
 import { Calendar, User, ArrowLeft, Share2, Heart, MessageCircle } from 'lucide-react'
+
+interface BlogPostData {
+  title: string
+  content: string
+  author: string
+  date: string
+  readTime: string
+  category: string
+  tags: string[]
+}
 
 // Mock blog post data - in a real app, this would be fetched based on the slug
 const getBlogPost = (slug: string) => {
@@ -135,7 +146,8 @@ Ready to add some artistic magic to your child's next birthday party? Contact us
       author: 'Sarah Heart',
       date: '2024-01-15',
       category: 'Birthday Parties',
-      readTime: '8 min read'
+      readTime: '8 min read',
+      tags: ['face painting', 'birthday parties', 'children', 'entertainment']
     }
   }
   
@@ -143,13 +155,37 @@ Ready to add some artistic magic to your child's next birthday party? Contact us
 }
 
 interface BlogPostProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export default function BlogPost({ params }: BlogPostProps) {
-  const post = getBlogPost(params.slug)
+  const [post, setPost] = useState<BlogPostData | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadPost = async () => {
+      const { slug } = await params
+      const postData = getBlogPost(slug)
+      setPost(postData)
+      setLoading(false)
+    }
+    loadPost()
+  }, [params])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
+        <Navigation />
+        <div className="pt-24 pb-16">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="animate-pulse">Loading...</div>
+          </div>
+        </div>
+      </div>
+    )
+  }
   
   if (!post) {
     return (
@@ -158,7 +194,7 @@ export default function BlogPost({ params }: BlogPostProps) {
         <div className="pt-24 pb-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Post Not Found</h1>
-            <p className="text-xl text-gray-600 mb-8">The blog post you're looking for doesn't exist.</p>
+            <p className="text-xl text-gray-600 mb-8">The blog post you&apos;re looking for doesn&apos;t exist.</p>
             <Link href="/blog" className="text-pink-500 font-semibold hover:text-pink-600">
               ← Back to Blog
             </Link>
@@ -280,7 +316,7 @@ export default function BlogPost({ params }: BlogPostProps) {
               <div>
                 <h3 className="text-xl font-bold text-gray-900">About {post.author}</h3>
                 <p className="text-gray-600">
-                  Sarah is the founder of Heart & Hand and a professional face painting artist with over 5 years of experience 
+                  Sarah is the founder of Heart &amp; Hand and a professional face painting artist with over 5 years of experience 
                   bringing joy to children and families through art. She specializes in creating magical experiences at birthday 
                   parties and special events.
                 </p>

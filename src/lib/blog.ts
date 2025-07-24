@@ -62,7 +62,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
       category: data.category || '',
       readTime: data.readTime || '5 min read'
     } as BlogPost
-  } catch (error) {
+  } catch {
     return null
   }
 }

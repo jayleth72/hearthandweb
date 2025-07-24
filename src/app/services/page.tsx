@@ -13,7 +13,7 @@ export default function Services() {
       features: [
         'Superhero designs',
         'Animal faces',
-        'Princess & fairy themes',
+        'Princess &amp; fairy themes',
         'Custom characters',
         'Quick 5-10 minute designs',
         'Full face masterpieces'
@@ -42,7 +42,7 @@ export default function Services() {
         'Birthday parties',
         'School events',
         'Corporate functions',
-        'Festivals & fairs',
+        'Festivals &amp; fairs',
         'Wedding entertainment',
         'Holiday celebrations'
       ],
@@ -111,7 +111,7 @@ export default function Services() {
                 <p className="text-gray-600 mb-6">{service.description}</p>
                 
                 <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-3">What's Included:</h4>
+                  <h4 className="font-semibold text-gray-900 mb-3">What&apos;s Included:</h4>
                   <ul className="space-y-2">
                     {service.features.map((feature, idx) => (
                       <li key={idx} className="flex items-center text-gray-600">

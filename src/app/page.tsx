@@ -38,10 +38,10 @@ export default function Home() {
           className="text-center"
         >
           <div className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 bg-clip-text text-transparent mb-4">
-            Heart & Hand
+            Heart &amp; Hand
           </div>
           <div className="text-xl md:text-2xl text-gray-600 font-light">
-            Face Painting & Henna Art
+            Face Painting &amp; Henna Art
           </div>
         </motion.div>
       </motion.div>

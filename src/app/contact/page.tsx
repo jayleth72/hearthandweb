@@ -75,13 +75,13 @@ export default function Contact() {
     {
       icon: MapPin,
       title: 'Service Area',
-      details: 'Greater Metro Area\n& Surrounding Communities',
+      details: 'Greater Metro Area\n&amp; Surrounding Communities',
       action: null
     },
     {
       icon: Clock,
       title: 'Availability',
-      details: 'Weekends & Evenings\nAdvance booking recommended',
+      details: 'Weekends &amp; Evenings\nAdvance booking recommended',
       action: null
     }
   ]
@@ -106,7 +106,7 @@ export default function Contact() {
               </span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Ready to add artistic magic to your event? Let's discuss your vision and create something beautiful together.
+              Ready to add artistic magic to your event? Let&apos;s discuss your vision and create something beautiful together.
             </p>
           </motion.div>
 
@@ -122,7 +122,7 @@ export default function Contact() {
               
               {submitStatus === 'success' && (
                 <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <p className="text-green-800">Thank you! We'll get back to you within 24 hours.</p>
+                  <p className="text-green-800">Thank you! We&apos;ll get back to you within 24 hours.</p>
                 </div>
               )}
 

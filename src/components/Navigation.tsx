@@ -25,7 +25,7 @@ export function Navigation() {
             href="/" 
             className="text-2xl font-bold bg-gradient-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent"
           >
-            Heart & Hand
+            Heart &amp; Hand
           </Link>
 
           {/* Desktop Navigation */}
