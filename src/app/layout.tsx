@@ -13,19 +13,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Heart &amp; Hand - Face Painting &amp; Henna Art",
+  title: "Heart and Hand Eco Body Art - Face Painting &amp; Henna Art",
   description: "Professional face painting and henna artistry for birthdays, festivals, corporate events, and special celebrations. Creating magical moments with beautiful, safe, and temporary art.",
   keywords: "face painting, henna art, birthday parties, events, children's entertainment, professional artist",
-  authors: [{ name: "Heart &amp; Hand" }],
+  authors: [{ name: "Heart and Hand Eco Body Art" }],
   openGraph: {
-    title: "Heart &amp; Hand - Face Painting &amp; Henna Art",
+    title: "Heart and Hand Eco Body Art - Face Painting &amp; Henna Art",
     description: "Professional face painting and henna artistry for special events",
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Heart &amp; Hand - Face Painting &amp; Henna Art",
+    title: "Heart and Hand Eco Body Art - Face Painting &amp; Henna Art",
     description: "Professional face painting and henna artistry for special events",
   },
 };

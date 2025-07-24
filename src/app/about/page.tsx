@@ -28,7 +28,7 @@ export default function About() {
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               About{' '}
               <span className="bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
-                Heart &amp; Hand
+                Heart and Hand Eco Body Art
               </span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -47,7 +47,7 @@ export default function About() {
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 <p>
-                  Heart &amp; Hand was born from a simple belief: that art has the power to transform 
+                  Heart and Hand Eco Body Art was born from a simple belief: that art has the power to transform 
                   ordinary moments into magical memories. What started as a hobby painting faces 
                   at local community events has grown into a thriving business that brings joy 
                   to hundreds of families across the region.

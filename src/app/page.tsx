@@ -38,7 +38,7 @@ export default function Home() {
           className="text-center"
         >
           <div className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400 bg-clip-text text-transparent mb-4">
-            Heart &amp; Hand
+            Heart and Hand Eco Body Art
           </div>
           <div className="text-xl md:text-2xl text-gray-300 font-light">
             Face Painting &amp; Henna Art

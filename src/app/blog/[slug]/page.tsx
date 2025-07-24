@@ -316,7 +316,7 @@ export default function BlogPost({ params }: BlogPostProps) {
               <div>
                 <h3 className="text-xl font-bold text-gray-900">About {post.author}</h3>
                 <p className="text-gray-600">
-                  Sarah is the founder of Heart &amp; Hand and a professional face painting artist with over 5 years of experience 
+                  Sarah is the founder of Heart and Hand Eco Body Art and a professional face painting artist with over 5 years of experience 
                   bringing joy to children and families through art. She specializes in creating magical experiences at birthday 
                   parties and special events.
                 </p>

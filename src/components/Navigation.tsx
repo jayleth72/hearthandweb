@@ -25,7 +25,7 @@ export function Navigation() {
             href="/" 
             className="text-2xl font-bold bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent"
           >
-            Heart &amp; Hand
+            Heart and Hand Eco Body Art
           </Link>
 
           {/* Desktop Navigation */}
