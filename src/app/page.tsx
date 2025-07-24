@@ -18,7 +18,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
+    <div className="min-h-screen bg-black">
       {/* Logo Fade Animation */}
       <motion.div
         initial={{ opacity: 1 }}
@@ -27,7 +27,7 @@ export default function Home() {
           scale: showContent ? 0.8 : 1
         }}
         transition={{ duration: 0.8, delay: showContent ? 0 : 1.5 }}
-        className={`fixed inset-0 flex items-center justify-center bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 z-50 ${
+        className={`fixed inset-0 flex items-center justify-center bg-black z-50 ${
           showContent ? 'pointer-events-none' : ''
         }`}
       >
@@ -37,10 +37,10 @@ export default function Home() {
           transition={{ duration: 1, ease: "easeOut" }}
           className="text-center"
         >
-          <div className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 bg-clip-text text-transparent mb-4">
+          <div className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400 bg-clip-text text-transparent mb-4">
             Heart &amp; Hand
           </div>
-          <div className="text-xl md:text-2xl text-gray-600 font-light">
+          <div className="text-xl md:text-2xl text-gray-300 font-light">
             Face Painting &amp; Henna Art
           </div>
         </motion.div>

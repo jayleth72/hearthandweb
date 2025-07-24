@@ -6,7 +6,7 @@ import { ArrowRight, Palette, Heart } from 'lucide-react'
 
 export function Hero() {
   return (
-    <div className="pt-16 min-h-screen flex items-center">
+    <div className="pt-16 min-h-screen flex items-center bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
@@ -20,10 +20,10 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="text-4xl md:text-6xl font-bold text-gray-900 mb-6"
+              className="text-4xl md:text-6xl font-bold text-white mb-6"
             >
               Bringing{' '}
-              <span className="bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
                 Art
               </span>{' '}
               to Life
@@ -33,7 +33,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-xl text-gray-600 mb-8 leading-relaxed"
+              className="text-xl text-gray-300 mb-8 leading-relaxed"
             >
               Professional face painting and henna artistry for birthdays, festivals, 
               corporate events, and special celebrations. Creating magical moments 
@@ -56,7 +56,7 @@ export function Hero() {
               
               <Link
                 href="/contact"
-                className="inline-flex items-center px-8 py-3 border-2 border-pink-300 text-pink-600 font-semibold rounded-full hover:bg-pink-50 transition-all duration-200 transform hover:scale-105"
+                className="inline-flex items-center px-8 py-3 border-2 border-pink-400 text-pink-400 font-semibold rounded-full hover:bg-gray-900 transition-all duration-200 transform hover:scale-105"
               >
                 Book Now
               </Link>
@@ -72,36 +72,36 @@ export function Hero() {
           >
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="bg-white rounded-xl p-6 shadow-lg border border-pink-100"
+              className="bg-gray-900 border border-gray-700 rounded-xl p-6 shadow-lg"
             >
               <div className="w-12 h-12 bg-gradient-to-r from-rose-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
                 <Palette className="text-white" size={24} />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Face Painting</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-semibold text-white mb-2">Face Painting</h3>
+              <p className="text-gray-300">
                 Creative and colorful face painting designs that delight children and adults alike.
               </p>
             </motion.div>
 
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="bg-white rounded-xl p-6 shadow-lg border border-pink-100"
+              className="bg-gray-900 border border-gray-700 rounded-xl p-6 shadow-lg"
             >
               <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
                 <Heart className="text-white" size={24} />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Henna Art</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-semibold text-white mb-2">Henna Art</h3>
+              <p className="text-gray-300">
                 Beautiful traditional and modern henna designs for special occasions and celebrations.
               </p>
             </motion.div>
 
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="bg-white rounded-xl p-6 shadow-lg border border-pink-100 sm:col-span-2"
+              className="bg-gray-900 border border-gray-700 rounded-xl p-6 shadow-lg sm:col-span-2"
             >
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Event Services</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-semibold text-white mb-2">Event Services</h3>
+              <p className="text-gray-300">
                 Perfect for birthday parties, school events, festivals, corporate gatherings, 
                 and any celebration that needs a touch of artistic magic.
               </p>

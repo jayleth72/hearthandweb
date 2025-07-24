@@ -17,13 +17,13 @@ export function Navigation() {
   ]
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-b border-pink-100">
+    <nav className="fixed top-0 left-0 right-0 z-40 bg-black/90 backdrop-blur-md border-b border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link 
             href="/" 
-            className="text-2xl font-bold bg-gradient-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent"
+            className="text-2xl font-bold bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent"
           >
             Heart &amp; Hand
           </Link>
@@ -34,7 +34,7 @@ export function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-gray-600 hover:text-pink-500 transition-colors duration-200 font-medium"
+                className="text-gray-300 hover:text-pink-400 transition-colors duration-200 font-medium"
               >
                 {item.label}
               </Link>
@@ -44,7 +44,7 @@ export function Navigation() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-md text-gray-600 hover:text-pink-500 hover:bg-pink-50 transition-colors duration-200"
+            className="md:hidden p-2 rounded-md text-gray-300 hover:text-pink-400 hover:bg-gray-800 transition-colors duration-200"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -63,7 +63,7 @@ export function Navigation() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="block px-4 py-2 text-gray-600 hover:text-pink-500 hover:bg-pink-50 rounded-md transition-colors duration-200 font-medium"
+                className="block px-4 py-2 text-gray-300 hover:text-pink-400 hover:bg-gray-800 rounded-md transition-colors duration-200 font-medium"
               >
                 {item.label}
               </Link>
