@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Palette, Heart } from 'lucide-react'
 
@@ -16,6 +17,23 @@ export function Hero() {
             transition={{ duration: 0.8 }}
             className="text-center lg:text-left"
           >
+            {/* Logo */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="mb-8 flex justify-center lg:justify-start"
+            >
+              <Image
+                src="/logo/logo.png"
+                alt="Heart and Hand Eco Body Art Logo"
+                width={400}
+                height={400}
+                className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-contain filter drop-shadow-lg"
+                priority
+              />
+            </motion.div>
+            
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -23,7 +41,7 @@ export function Hero() {
               className="text-4xl md:text-6xl font-bold text-white mb-6"
             >
               Bringing{' '}
-              <span className="bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 bg-clip-text text-transparent">
                 Art
               </span>{' '}
               to Life
@@ -48,7 +66,7 @@ export function Hero() {
             >
               <Link
                 href="/services"
-                className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-rose-500 to-pink-500 text-white font-semibold rounded-full hover:from-rose-600 hover:to-pink-600 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white font-semibold rounded-full hover:from-orange-700 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 shadow-lg"
               >
                 View Services
                 <ArrowRight className="ml-2" size={20} />
@@ -56,7 +74,7 @@ export function Hero() {
               
               <Link
                 href="/contact"
-                className="inline-flex items-center px-8 py-3 border-2 border-pink-400 text-pink-400 font-semibold rounded-full hover:bg-gray-900 transition-all duration-200 transform hover:scale-105"
+                className="inline-flex items-center px-8 py-3 border-2 border-orange-500 text-orange-500 font-semibold rounded-full hover:bg-gray-900 transition-all duration-200 transform hover:scale-105"
               >
                 Book Now
               </Link>
@@ -74,7 +92,7 @@ export function Hero() {
               whileHover={{ scale: 1.05 }}
               className="bg-gray-900 border border-gray-700 rounded-xl p-6 shadow-lg"
             >
-              <div className="w-12 h-12 bg-gradient-to-r from-rose-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-orange-600 to-orange-500 rounded-lg flex items-center justify-center mb-4">
                 <Palette className="text-white" size={24} />
               </div>
               <h3 className="text-xl font-semibold text-white mb-2">Face Painting</h3>
@@ -87,7 +105,7 @@ export function Hero() {
               whileHover={{ scale: 1.05 }}
               className="bg-gray-900 border border-gray-700 rounded-xl p-6 shadow-lg"
             >
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-amber-600 to-orange-500 rounded-lg flex items-center justify-center mb-4">
                 <Heart className="text-white" size={24} />
               </div>
               <h3 className="text-xl font-semibold text-white mb-2">Henna Art</h3>

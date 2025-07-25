@@ -12,7 +12,7 @@ export function Navigation() {
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/services', label: 'Services' },
-    { href: '/blog', label: 'Blog' },
+    // { href: '/blog', label: 'Blog' }, // Hidden for now
     { href: '/contact', label: 'Contact' },
   ]
 
@@ -23,7 +23,7 @@ export function Navigation() {
           {/* Logo */}
           <Link 
             href="/" 
-            className="text-2xl font-bold bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent"
+            className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent"
           >
             Heart and Hand Eco Body Art
           </Link>
@@ -34,7 +34,7 @@ export function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-gray-300 hover:text-pink-400 transition-colors duration-200 font-medium"
+                className="text-gray-300 hover:text-orange-500 transition-colors duration-200 font-medium"
               >
                 {item.label}
               </Link>
@@ -44,7 +44,7 @@ export function Navigation() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-md text-gray-300 hover:text-pink-400 hover:bg-gray-800 transition-colors duration-200"
+            className="md:hidden p-2 rounded-md text-gray-300 hover:text-orange-500 hover:bg-gray-800 transition-colors duration-200"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -63,7 +63,7 @@ export function Navigation() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="block px-4 py-2 text-gray-300 hover:text-pink-400 hover:bg-gray-800 rounded-md transition-colors duration-200 font-medium"
+                className="block px-4 py-2 text-gray-300 hover:text-orange-500 hover:bg-gray-800 rounded-md transition-colors duration-200 font-medium"
               >
                 {item.label}
               </Link>

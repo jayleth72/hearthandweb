@@ -13,7 +13,7 @@ export default function About() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
       <Navigation />
       
       <div className="pt-24 pb-16">
@@ -27,7 +27,7 @@ export default function About() {
           >
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               About{' '}
-              <span className="bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 bg-clip-text text-transparent">
                 Heart and Hand Eco Body Art
               </span>
             </h1>
@@ -72,32 +72,32 @@ export default function About() {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="order-1 lg:order-2"
             >
-              <div className="bg-white rounded-2xl p-8 shadow-xl border border-pink-100">
+              <div className="bg-white rounded-2xl p-8 shadow-xl border border-orange-100">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Why Choose Us?</h3>
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex-shrink-0 mt-0.5"></div>
+                    <div className="w-6 h-6 bg-gradient-to-r from-orange-600 to-orange-500 rounded-full flex-shrink-0 mt-0.5"></div>
                     <div>
                       <h4 className="font-semibold text-gray-900">Professional Quality</h4>
                       <p className="text-gray-600">FDA-approved, skin-safe paints and materials</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex-shrink-0 mt-0.5"></div>
+                    <div className="w-6 h-6 bg-gradient-to-r from-orange-600 to-orange-500 rounded-full flex-shrink-0 mt-0.5"></div>
                     <div>
                       <h4 className="font-semibold text-gray-900">Experienced Artists</h4>
                       <p className="text-gray-600">Trained professionals with years of experience</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex-shrink-0 mt-0.5"></div>
+                    <div className="w-6 h-6 bg-gradient-to-r from-orange-600 to-orange-500 rounded-full flex-shrink-0 mt-0.5"></div>
                     <div>
                       <h4 className="font-semibold text-gray-900">Custom Designs</h4>
                       <p className="text-gray-600">Personalized artwork tailored to your event</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex-shrink-0 mt-0.5"></div>
+                    <div className="w-6 h-6 bg-gradient-to-r from-orange-600 to-orange-500 rounded-full flex-shrink-0 mt-0.5"></div>
                     <div>
                       <h4 className="font-semibold text-gray-900">Reliable Service</h4>
                       <p className="text-gray-600">Punctual, professional, and fully insured</p>
@@ -119,9 +119,9 @@ export default function About() {
               <motion.div
                 key={index}
                 whileHover={{ scale: 1.05 }}
-                className="text-center bg-white rounded-xl p-6 shadow-lg border border-pink-100"
+                className="text-center bg-white rounded-xl p-6 shadow-lg border border-orange-100"
               >
-                <div className="w-16 h-16 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-orange-600 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <stat.icon className="text-white" size={32} />
                 </div>
                 <div className="text-3xl font-bold text-gray-900 mb-2">{stat.number}</div>
@@ -135,7 +135,7 @@ export default function About() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="text-center bg-gradient-to-r from-rose-500 to-pink-500 rounded-2xl p-12 text-white"
+            className="text-center bg-gradient-to-r from-orange-600 to-orange-500 rounded-2xl p-12 text-white"
           >
             <h2 className="text-3xl font-bold mb-4">Ready to Add Magic to Your Event?</h2>
             <p className="text-xl mb-8 opacity-90">

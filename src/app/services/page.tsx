@@ -69,7 +69,7 @@ export default function Services() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
       <Navigation />
       
       <div className="pt-24 pb-16">
@@ -83,7 +83,7 @@ export default function Services() {
           >
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               Our{' '}
-              <span className="bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 bg-clip-text text-transparent">
                 Services
               </span>
             </h1>
@@ -101,9 +101,9 @@ export default function Services() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
                 whileHover={{ scale: 1.02 }}
-                className="bg-white rounded-2xl p-8 shadow-xl border border-pink-100 h-full"
+                className="bg-white rounded-2xl p-8 shadow-xl border border-orange-100 h-full"
               >
-                <div className="w-16 h-16 bg-gradient-to-r from-rose-500 to-pink-500 rounded-xl flex items-center justify-center mb-6">
+                <div className="w-16 h-16 bg-gradient-to-r from-orange-600 to-orange-500 rounded-xl flex items-center justify-center mb-6">
                   <service.icon className="text-white" size={32} />
                 </div>
                 
@@ -115,15 +115,15 @@ export default function Services() {
                   <ul className="space-y-2">
                     {service.features.map((feature, idx) => (
                       <li key={idx} className="flex items-center text-gray-600">
-                        <div className="w-2 h-2 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full mr-3"></div>
+                        <div className="w-2 h-2 bg-gradient-to-r from-orange-600 to-orange-500 rounded-full mr-3"></div>
                         {feature}
                       </li>
                     ))}
                   </ul>
                 </div>
                 
-                <div className="border-t border-pink-100 pt-6">
-                  <div className="text-2xl font-bold bg-gradient-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent">
+                <div className="border-t border-orange-100 pt-6">
+                  <div className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
                     {service.price}
                   </div>
                 </div>
@@ -146,9 +146,9 @@ export default function Services() {
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.05 }}
-                  className="text-center bg-white rounded-xl p-6 shadow-lg border border-pink-100"
+                  className="text-center bg-white rounded-xl p-6 shadow-lg border border-orange-100"
                 >
-                  <div className="w-12 h-12 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-orange-600 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                     <feature.icon className="text-white" size={24} />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
@@ -163,7 +163,7 @@ export default function Services() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="bg-white rounded-2xl p-8 shadow-xl border border-pink-100 mb-20"
+            className="bg-white rounded-2xl p-8 shadow-xl border border-orange-100 mb-20"
           >
             <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Pricing Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -203,7 +203,7 @@ export default function Services() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="text-center bg-gradient-to-r from-rose-500 to-pink-500 rounded-2xl p-12 text-white"
+            className="text-center bg-gradient-to-r from-orange-600 to-orange-500 rounded-2xl p-12 text-white"
           >
             <h2 className="text-3xl font-bold mb-4">Ready to Book Your Event?</h2>
             <p className="text-xl mb-8 opacity-90">

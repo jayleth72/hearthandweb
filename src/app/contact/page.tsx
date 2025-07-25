@@ -63,31 +63,31 @@ export default function Contact() {
     {
       icon: Phone,
       title: 'Phone',
-      details: '(555) 123-4567',
-      action: 'tel:+15551234567'
+      details: '044 9979 181',
+      action: 'tel:+61449979181'
     },
     {
       icon: Mail,
       title: 'Email',
-      details: 'hello@heartandhand.com',
-      action: 'mailto:hello@heartandhand.com'
+      details: 'info@handheartecobodyart.com',
+      action: 'mailto:info@handheartecobodyart.com'
     },
     {
       icon: MapPin,
       title: 'Service Area',
-      details: 'Greater Metro Area\n&amp; Surrounding Communities',
+      details: 'Mary Valley QLD and Surrounding Communities',
       action: null
     },
     {
       icon: Clock,
       title: 'Availability',
-      details: 'Weekends &amp; Evenings\nAdvance booking recommended',
+      details: 'Weekends and Evenings\nAdvance booking recommended',
       action: null
     }
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
       <Navigation />
       
       <div className="pt-24 pb-16">
@@ -101,7 +101,7 @@ export default function Contact() {
           >
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               Get in{' '}
-              <span className="bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 bg-clip-text text-transparent">
                 Touch
               </span>
             </h1>
@@ -116,7 +116,7 @@ export default function Contact() {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="bg-white rounded-2xl p-8 shadow-xl border border-pink-100"
+              className="bg-white rounded-2xl p-8 shadow-xl border border-orange-100"
             >
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Book Your Event</h2>
               
@@ -259,7 +259,7 @@ export default function Contact() {
                   disabled={isSubmitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-gradient-to-r from-rose-500 to-pink-500 text-white font-bold py-4 px-8 rounded-lg hover:from-rose-600 hover:to-pink-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  className="w-full bg-gradient-to-r from-orange-600 to-orange-500 text-white font-bold py-4 px-8 rounded-lg hover:from-rose-600 hover:to-pink-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                 >
                   {isSubmitting ? (
                     <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
@@ -280,7 +280,7 @@ export default function Contact() {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="space-y-8"
             >
-              <div className="bg-white rounded-2xl p-8 shadow-xl border border-pink-100">
+              <div className="bg-white rounded-2xl p-8 shadow-xl border border-orange-100">
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">Contact Information</h2>
                 <div className="space-y-6">
                   {contactInfo.map((info, index) => (
@@ -290,7 +290,7 @@ export default function Contact() {
                       className={`flex items-start space-x-4 ${info.action ? 'cursor-pointer' : ''}`}
                       onClick={() => info.action && window.open(info.action)}
                     >
-                      <div className="w-12 h-12 bg-gradient-to-r from-rose-500 to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-r from-orange-600 to-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
                         <info.icon className="text-white" size={24} />
                       </div>
                       <div>
@@ -302,7 +302,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl p-8 shadow-xl border border-pink-100">
+              <div className="bg-white rounded-2xl p-8 shadow-xl border border-orange-100">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Quick Response Times</h3>
                 <div className="space-y-3 text-gray-600">
                   <p>• Email inquiries: Within 24 hours</p>
@@ -312,7 +312,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-rose-500 to-pink-500 rounded-2xl p-8 text-white">
+              <div className="bg-gradient-to-r from-orange-600 to-orange-500 rounded-2xl p-8 text-white">
                 <h3 className="text-2xl font-bold mb-4">Booking Tips</h3>
                 <div className="space-y-3 opacity-90">
                   <p>• Book 2-4 weeks in advance for best availability</p>

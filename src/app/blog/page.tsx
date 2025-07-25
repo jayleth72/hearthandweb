@@ -79,7 +79,7 @@ const categories = ['All', 'Birthday Parties', 'Henna Art', 'Safety Tips', 'Desi
 
 export default function Blog() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
       <Navigation />
       
       <div className="pt-24 pb-16">
@@ -93,7 +93,7 @@ export default function Blog() {
           >
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               Our{' '}
-              <span className="bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 bg-clip-text text-transparent">
                 Blog
               </span>
             </h1>
@@ -114,7 +114,7 @@ export default function Blog() {
                 key={category}
                 className={`px-6 py-2 rounded-full transition-all duration-200 ${
                   index === 0
-                    ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white'
+                    ? 'bg-gradient-to-r from-orange-600 to-orange-500 text-white'
                     : 'bg-white text-gray-600 hover:bg-pink-50 hover:text-pink-600 border border-pink-200'
                 }`}
               >
@@ -131,7 +131,7 @@ export default function Blog() {
             className="mb-16"
           >
             <Link href={`/blog/${blogPosts[0].slug}`}>
-              <div className="bg-white rounded-2xl shadow-xl border border-pink-100 overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+              <div className="bg-white rounded-2xl shadow-xl border border-orange-100 overflow-hidden hover:shadow-2xl transition-shadow duration-300">
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                   <div className="aspect-video lg:aspect-auto">
                     <div className="w-full h-full bg-gradient-to-br from-rose-200 to-pink-200 flex items-center justify-center">
@@ -179,7 +179,7 @@ export default function Blog() {
                 transition={{ duration: 0.8, delay: 0.6 + index * 0.1 }}
               >
                 <Link href={`/blog/${post.slug}`}>
-                  <div className="bg-white rounded-2xl shadow-lg border border-pink-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105">
+                  <div className="bg-white rounded-2xl shadow-lg border border-orange-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105">
                     <div className="aspect-video bg-gradient-to-br from-rose-200 to-pink-200 flex items-center justify-center">
                       <span className="text-gray-500">Post Image</span>
                     </div>
@@ -214,7 +214,7 @@ export default function Blog() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="mt-20 text-center bg-gradient-to-r from-rose-500 to-pink-500 rounded-2xl p-12 text-white"
+            className="mt-20 text-center bg-gradient-to-r from-orange-600 to-orange-500 rounded-2xl p-12 text-white"
           >
             <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
             <p className="text-xl mb-8 opacity-90">

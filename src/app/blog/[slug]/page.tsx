@@ -176,7 +176,7 @@ export default function BlogPost({ params }: BlogPostProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
         <Navigation />
         <div className="pt-24 pb-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -189,7 +189,7 @@ export default function BlogPost({ params }: BlogPostProps) {
   
   if (!post) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
         <Navigation />
         <div className="pt-24 pb-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -205,7 +205,7 @@ export default function BlogPost({ params }: BlogPostProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
       <Navigation />
       
       <div className="pt-24 pb-16">
@@ -292,7 +292,7 @@ export default function BlogPost({ params }: BlogPostProps) {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="prose prose-lg max-w-none mb-12"
           >
-            <div className="bg-white rounded-2xl p-8 shadow-lg border border-pink-100">
+            <div className="bg-white rounded-2xl p-8 shadow-lg border border-orange-100">
               <div 
                 className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-h1:text-4xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-gray-600 prose-p:leading-relaxed prose-li:text-gray-600 prose-strong:text-gray-900"
                 dangerouslySetInnerHTML={{ 
@@ -307,10 +307,10 @@ export default function BlogPost({ params }: BlogPostProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="bg-white rounded-2xl p-8 shadow-lg border border-pink-100 mb-12"
+            className="bg-white rounded-2xl p-8 shadow-lg border border-orange-100 mb-12"
           >
             <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex items-center justify-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-orange-600 to-orange-500 rounded-full flex items-center justify-center">
                 <User className="text-white" size={24} />
               </div>
               <div>
@@ -345,7 +345,7 @@ export default function BlogPost({ params }: BlogPostProps) {
                 }
               ].map((relatedPost, index) => (
                 <Link key={index} href={`/blog/${relatedPost.slug}`}>
-                  <div className="bg-white rounded-xl p-6 shadow-lg border border-pink-100 hover:shadow-xl transition-shadow duration-300">
+                  <div className="bg-white rounded-xl p-6 shadow-lg border border-orange-100 hover:shadow-xl transition-shadow duration-300">
                     <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-pink-600 transition-colors duration-200">
                       {relatedPost.title}
                     </h3>
