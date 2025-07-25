@@ -25,11 +25,11 @@ export function Hero() {
               className="mb-8 flex justify-center lg:justify-start"
             >
               <Image
-                src="/logo/logo.png"
+                src="/logo/logo1.png"
                 alt="Heart and Hand Eco Body Art Logo"
-                width={400}
-                height={400}
-                className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-contain filter drop-shadow-lg"
+                width={600}
+                height={600}
+                className="w-[calc(100vw-40px)] h-auto lg:w-[calc(50vw-20px)] object-contain filter drop-shadow-lg"
                 priority
               />
             </motion.div>

@@ -188,7 +188,7 @@ export default function Services() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">Additional Information</h3>
                 <ul className="space-y-2 text-gray-600">
                   <li>• 2-hour minimum booking</li>
-                  <li>• Travel fees may apply (30+ miles)</li>
+                  <li>• Travel fees may apply</li>
                   <li>• Group discounts available</li>
                   <li>• Setup/cleanup time included</li>
                   <li>• All supplies provided</li>
