@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Navigation } from '@/components/Navigation'
+import { Footer } from '@/components/Footer'
 import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react'
 
 export default function Contact() {
@@ -325,6 +326,7 @@ export default function Contact() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

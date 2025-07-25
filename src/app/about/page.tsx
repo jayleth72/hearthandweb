@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Navigation } from '@/components/Navigation'
+import { Footer } from '@/components/Footer'
 import { Heart, Star, Users, Award } from 'lucide-react'
 
 export default function About() {
@@ -151,6 +152,7 @@ export default function About() {
           </motion.div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

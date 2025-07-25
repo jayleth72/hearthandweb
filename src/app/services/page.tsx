@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Navigation } from '@/components/Navigation'
+import { Footer } from '@/components/Footer'
 import { Palette, Heart, Star, Users, Clock, Shield } from 'lucide-react'
 
 export default function Services() {
@@ -228,6 +229,7 @@ export default function Services() {
           </motion.div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }
