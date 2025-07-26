@@ -2,8 +2,6 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Navigation } from '@/components/Navigation'
-import { Footer } from '@/components/Footer'
 import { Palette, Heart, Star, Users, Clock, Shield, ArrowRight } from 'lucide-react'
 
 export default function Services() {
@@ -69,8 +67,6 @@ export default function Services() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
-      <Navigation />
-      
       <div className="pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
@@ -212,7 +208,6 @@ export default function Services() {
           </motion.div>
         </div>
       </div>
-      <Footer />
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
+import { SocialMediaLinks } from './SocialMediaLinks'
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
@@ -12,6 +13,8 @@ export function Navigation() {
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/services', label: 'Services' },
+    // { href: '/gallery', label: 'Gallery' }, // Hidden for now
+    { href: '/events', label: 'Events' },
     // { href: '/blog', label: 'Blog' }, // Hidden for now
     { href: '/contact', label: 'Contact' },
   ]
@@ -28,17 +31,25 @@ export function Navigation() {
             Heart and Hand Eco Body Art
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-gray-300 hover:text-orange-500 transition-colors duration-200 font-medium"
-              >
-                {item.label}
-              </Link>
-            ))}
+          {/* Desktop Navigation & Social Media */}
+          <div className="hidden md:flex items-center space-x-8">
+            {/* Navigation Links */}
+            <div className="flex space-x-8">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-gray-300 hover:text-orange-500 transition-colors duration-200 font-medium"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+            
+            {/* Social Media Icons */}
+            <div className="border-l border-gray-700 pl-6">
+              <SocialMediaLinks variant="minimal" />
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -68,6 +79,12 @@ export function Navigation() {
                 {item.label}
               </Link>
             ))}
+            
+            {/* Mobile Social Media */}
+            <div className="px-4 py-4 border-t border-gray-700 mt-4">
+              <div className="text-sm text-gray-400 mb-3">Follow Us</div>
+              <SocialMediaLinks variant="minimal" />
+            </div>
           </div>
         </motion.div>
       </div>
