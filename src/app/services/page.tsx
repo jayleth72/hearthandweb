@@ -1,9 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { Navigation } from '@/components/Navigation'
 import { Footer } from '@/components/Footer'
-import { Palette, Heart, Star, Users, Clock, Shield } from 'lucide-react'
+import { Palette, Heart, Star, Users, Clock, Shield, ArrowRight } from 'lucide-react'
 
 export default function Services() {
   const services = [
@@ -18,8 +19,7 @@ export default function Services() {
         'Custom characters',
         'Quick 5-10 minute designs',
         'Full face masterpieces'
-      ],
-      price: 'Starting at $150/hour'
+      ]
     },
     {
       icon: Heart,
@@ -32,8 +32,7 @@ export default function Services() {
         'Festival art',
         'Custom motifs',
         'Natural ingredients'
-      ],
-      price: 'Starting at $200/hour'
+      ]
     },
     {
       icon: Star,
@@ -46,8 +45,7 @@ export default function Services() {
         'Festivals &amp; fairs',
         'Wedding entertainment',
         'Holiday celebrations'
-      ],
-      price: 'Custom pricing available'
+      ]
     }
   ]
 
@@ -124,9 +122,13 @@ export default function Services() {
                 </div>
                 
                 <div className="border-t border-orange-100 pt-6">
-                  <div className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                    {service.price}
-                  </div>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center text-orange-600 hover:text-orange-700 font-semibold transition-colors duration-200"
+                  >
+                    Contact us for pricing
+                    <ArrowRight className="ml-2" size={16} />
+                  </Link>
                 </div>
               </motion.div>
             ))}
@@ -159,44 +161,25 @@ export default function Services() {
             </div>
           </motion.div>
 
-          {/* Pricing Info */}
+          {/* Contact for Pricing */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="bg-white rounded-2xl p-8 shadow-xl border border-orange-100 mb-20"
+            className="bg-gradient-to-r from-orange-600 to-orange-500 rounded-2xl p-12 shadow-xl text-center text-white mb-20"
           >
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Pricing Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">Hourly Rates</h3>
-                <ul className="space-y-3 text-gray-600">
-                  <li className="flex justify-between">
-                    <span>Face Painting (1 artist)</span>
-                    <span className="font-semibold">$150/hour</span>
-                  </li>
-                  <li className="flex justify-between">
-                    <span>Henna Art (1 artist)</span>
-                    <span className="font-semibold">$200/hour</span>
-                  </li>
-                  <li className="flex justify-between">
-                    <span>Combined Package</span>
-                    <span className="font-semibold">$300/hour</span>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">Additional Information</h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li>• 2-hour minimum booking</li>
-                  <li>• Travel fees may apply</li>
-                  <li>• Group discounts available</li>
-                  <li>• Setup/cleanup time included</li>
-                  <li>• All supplies provided</li>
-                  <li>• Liability insurance included</li>
-                </ul>
-              </div>
-            </div>
+            <h2 className="text-4xl font-bold mb-4">Get Your Custom Quote</h2>
+            <p className="text-xl mb-8 opacity-90">
+              Every event is unique! Contact us for personalized pricing based on your specific needs, 
+              event duration, guest count, and location.
+            </p>
+            <Link
+              href="/contact"
+              className="inline-flex items-center px-8 py-4 bg-white text-orange-600 font-bold rounded-full hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg"
+            >
+              Contact Us for Pricing
+              <ArrowRight className="ml-2" size={20} />
+            </Link>
           </motion.div>
 
           {/* CTA Section */}

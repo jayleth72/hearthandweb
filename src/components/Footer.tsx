@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { Facebook, Instagram } from 'lucide-react'
+import { Phone, Mail } from 'lucide-react'
+import { SocialMediaLinks } from './SocialMediaLinks'
 
 export function Footer() {
   const navItems = [
@@ -25,26 +26,7 @@ export function Footer() {
             </p>
             
             {/* Social Media Icons */}
-            <div className="flex space-x-4">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-orange-600 transition-colors duration-200"
-                aria-label="Facebook"
-              >
-                <Facebook className="text-gray-300 hover:text-white" size={20} />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-orange-600 transition-colors duration-200"
-                aria-label="Instagram"
-              >
-                <Instagram className="text-gray-300 hover:text-white" size={20} />
-              </a>
-            </div>
+            <SocialMediaLinks variant="footer" />
           </div>
 
           {/* Navigation Links */}
@@ -67,10 +49,26 @@ export function Footer() {
           {/* Contact Info */}
           <div className="md:col-span-1">
             <h4 className="text-lg font-semibold text-white mb-4">Contact</h4>
-            <div className="space-y-3 text-gray-300">
-              <p>Phone: 044 9979 181</p>
-              <p>Email: info@handheartecobodyart.com</p>
-              <p>Service Area: Mary Valley QLD and Surrounding Communities</p>
+            <div className="space-y-3">
+              <a
+                href="tel:+61449979181"
+                className="flex items-center space-x-3 text-gray-300 hover:text-orange-500 transition-colors duration-200"
+              >
+                <div className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center">
+                  <Phone size={16} />
+                </div>
+                <span>044 9979 181</span>
+              </a>
+              
+              <a
+                href="mailto:info@handheartecobodyart.com"
+                className="flex items-center space-x-3 text-gray-300 hover:text-orange-500 transition-colors duration-200"
+              >
+                <div className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center">
+                  <Mail size={16} />
+                </div>
+                <span>info@handheartecobodyart.com</span>
+              </a>
             </div>
           </div>
         </div>
