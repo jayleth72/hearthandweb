@@ -18,17 +18,6 @@ export function Navigation() {
     // { href: '/blog', label: 'Blog' }, // Hidden for now
     { href: '/contact', label: 'Contact' },
   ]
-  const [isOpen, setIsOpen] = useState(false)
-
-  const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/services', label: 'Services' },
-    { href: '/gallery', label: 'Gallery' }, // Uncomment when Instagram API is ready
-    { href: '/events', label: 'Events' },
-    // { href: '/blog', label: 'Blog' }, // Hidden for now
-    { href: '/contact', label: 'Contact' },
-  ]
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 bg-black/90 backdrop-blur-md border-b border-gray-800">
