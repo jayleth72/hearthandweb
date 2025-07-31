@@ -1,0 +1,18 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="180" height="180" rx="40" fill="#000000"/>
+  
+  <!-- Heart shape -->
+  <path d="M90 135L55 100C45 90 45 75 55 65C65 55 80 55 90 65L90 85L90 65C100 55 115 55 125 65C135 75 135 90 125 100L90 135Z" fill="#EA580C"/>
+  
+  <!-- Hand/brush stroke -->
+  <path d="M65 55L75 65L105 35L95 25L65 55Z" fill="#F97316"/>
+  <circle cx="105" cy="35" r="8" fill="#FBBF24"/>
+  
+  <!-- Paint drops -->
+  <circle cx="60" cy="80" r="6" fill="#FBBF24" opacity="0.9"/>
+  <circle cx="120" cy="85" r="4" fill="#F97316" opacity="0.8"/>
+  
+  <!-- Text -->
+  <text x="90" y="160" text-anchor="middle" fill="#FBBF24" font-family="Arial, sans-serif" font-size="14" font-weight="bold">H&amp;H</text>
+</svg>

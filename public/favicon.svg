@@ -1,0 +1,14 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="32" height="32" rx="6" fill="#000000"/>
+  
+  <!-- Heart shape (simplified for small size) -->
+  <path d="M16 22L10 16C9 15 9 13 10 12C11 11 13 11 14 12L16 14L18 12C19 11 21 11 22 12C23 13 23 15 22 16L16 22Z" fill="#EA580C"/>
+  
+  <!-- Hand/brush stroke -->
+  <path d="M12 10L13 11L18 6L17 5L12 10Z" fill="#F97316"/>
+  <circle cx="18" cy="6" r="1" fill="#FBBF24"/>
+  
+  <!-- Small paint drop -->
+  <circle cx="11" cy="13" r="0.8" fill="#FBBF24"/>
+</svg>
