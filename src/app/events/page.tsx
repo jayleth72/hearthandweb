@@ -27,7 +27,7 @@ const upcomingEvents: Event[] = [
   },
   {
     id: '2',
-    title: 'Children\'s Birthday Party Showcase',
+    title: 'Children&apos;s Birthday Party Showcase',
     date: '2025-08-22',
     time: '2:00 PM - 5:00 PM',
     location: 'Little Sprouts Party Venue',
@@ -90,7 +90,6 @@ const formatDate = (dateString: string) => {
 
 export default function EventsPage() {
   const featuredEvents = upcomingEvents.filter(event => event.featured)
-  const regularEvents = upcomingEvents.filter(event => !event.featured)
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -215,7 +214,7 @@ export default function EventsPage() {
               <h2 className="text-3xl font-bold text-white">Want Us at Your Event?</h2>
             </div>
             <p className="text-xl text-gray-300 mb-6 max-w-2xl mx-auto">
-              We'd love to bring our artistic magic to your special occasion! 
+              We&apos;d love to bring our artistic magic to your special occasion! 
               Contact us to discuss availability and custom packages.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
