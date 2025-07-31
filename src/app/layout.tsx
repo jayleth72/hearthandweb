@@ -19,6 +19,13 @@ export const metadata: Metadata = {
   description: "Professional face painting and henna artistry for birthdays, festivals, corporate events, and special celebrations. Creating magical moments with beautiful, safe, and temporary art.",
   keywords: "face painting, henna art, birthday parties, events, children's entertainment, professional artist",
   authors: [{ name: "Heart and Hand Eco Body Art" }],
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' }
+    ],
+    apple: '/apple-touch-icon.svg'
+  },
+  manifest: '/manifest.json',
   openGraph: {
     title: "Heart and Hand Eco Body Art - Face Painting &amp; Henna Art",
     description: "Professional face painting and henna artistry for special events",
