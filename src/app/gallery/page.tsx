@@ -1,192 +1,51 @@
-'use client'
-
-import { motion } from 'framer-motion'
-import Link from 'next/link'
-import { Camera, Star, Users, Calendar } from 'lucide-react'
-
-const workCategories = [
-  {
-    id: 'face-painting',
-    title: 'Face Painting',
-    description: 'Creative and colorful designs that bring joy to children and adults alike.',
-    icon: '🎨',
-    examples: ['Butterflies', 'Superheroes', 'Animals', 'Fantasy designs']
-  },
-  {
-    id: 'henna',
-    title: 'Henna Art',
-    description: 'Beautiful traditional and modern henna designs for special occasions.',
-    icon: '🌿',
-    examples: ['Mandala patterns', 'Floral designs', 'Geometric art', 'Custom requests']
-  },
-  {
-    id: 'events',
-    title: 'Event Services',
-    description: 'Professional entertainment for birthdays, festivals, and corporate events.',
-    icon: '🎉',
-    examples: ['Birthday parties', 'School events', 'Corporate gatherings', 'Community festivals']
-  }
-]
-
-const features = [
-  {
-    icon: <Star className="text-orange-500" size={24} />,
-    title: 'Professional Quality',
-    description: 'High-quality, safe, and hypoallergenic materials for all our artistry.'
-  },
-  {
-    icon: <Users className="text-orange-500" size={24} />,
-    title: 'All Ages Welcome',
-    description: 'Designs and services suitable for children, teens, and adults.'
-  },
-  {
-    icon: <Calendar className="text-orange-500" size={24} />,
-    title: 'Event Booking',
-    description: 'Available for parties, festivals, corporate events, and special occasions.'
-  }
-]
+import { InstagramGallery } from '@/components/InstagramGallery'
 
 export default function GalleryPage() {
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <div className="pt-24 pb-12 bg-gradient-to-br from-black via-gray-900 to-black">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+      <div className="pt-20 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-4xl md:text-6xl font-bold mb-6"
+          {/* Header Section */}
+          <div className="text-center mb-16">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 bg-clip-text text-transparent mb-6">
+              Our Creative Gallery
+            </h1>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              Explore our latest face painting and henna art creations. Each piece showcases the joy, 
+              creativity, and artistic excellence that defines Heart & Hand.
+            </p>
+          </div>
+
+          {/* Instagram Gallery Component */}
+          <InstagramGallery />
+
+          {/* Call to Action */}
+          <div className="text-center mt-16 p-8 bg-gradient-to-r from-orange-600/10 to-orange-500/10 rounded-2xl border border-orange-500/20">
+            <h2 className="text-2xl font-bold text-white mb-4">
+              Love what you see?
+            </h2>
+            <p className="text-gray-300 mb-6">
+              Follow us on Instagram for daily inspiration and behind-the-scenes content!
+            </p>
+            <a
+              href="https://instagram.com/heartandhand"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-600 to-orange-500 text-white px-8 py-3 rounded-full hover:from-orange-700 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 font-semibold"
             >
-              Our{' '}
-              <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 bg-clip-text text-transparent">
-                Gallery
-              </span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              className="text-xl text-gray-300 max-w-3xl mx-auto"
-            >
-              Discover the magic of our artistic creations. From vibrant face paintings to intricate henna designs, 
-              see how we bring joy and creativity to every event.
-            </motion.p>
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+              Follow @heartandhand
+            </a>
           </div>
         </div>
       </div>
-
-      {/* Work Categories */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {workCategories.map((category, index) => (
-              <motion.div
-                key={category.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.8 }}
-                className="bg-gray-900 border border-gray-700 rounded-xl p-8 hover:border-orange-500/50 transition-all duration-300"
-              >
-                <div className="text-4xl mb-4 text-center">{category.icon}</div>
-                <h3 className="text-2xl font-bold text-white mb-4 text-center">{category.title}</h3>
-                <p className="text-gray-300 mb-6 text-center">{category.description}</p>
-                <div className="space-y-2">
-                  <h4 className="text-orange-500 font-semibold">Popular designs:</h4>
-                  <ul className="text-gray-300 space-y-1">
-                    {category.examples.map((example, idx) => (
-                      <li key={idx} className="flex items-center">
-                        <span className="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-                        {example}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Instagram CTA */}
-      <section className="py-16 bg-gray-900/50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="bg-gradient-to-r from-gray-800 to-gray-700 border border-orange-500/30 rounded-xl p-8"
-          >
-            <Camera className="text-orange-500 mx-auto mb-4" size={48} />
-            <h2 className="text-3xl font-bold text-white mb-4">See Our Latest Work</h2>
-            <p className="text-xl text-gray-300 mb-6">
-              Follow us on Instagram for daily inspiration, behind-the-scenes content, 
-              and our latest artistic creations!
-            </p>
-            <a
-              href="https://instagram.com/heartandhandecobodyart"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white font-semibold rounded-full hover:from-orange-700 hover:to-orange-600 transition-all duration-200 transform hover:scale-105"
-            >
-              Follow @heartandhandecobodyart
-            </a>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Why Choose Us */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Why Choose Heart & Hand?</h2>
-            <p className="text-xl text-gray-300">Professional artistry you can trust</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.8 }}
-                className="text-center"
-              >
-                <div className="w-16 h-16 bg-gray-800 border border-orange-500/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
-                <p className="text-gray-300">{feature.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Book Now CTA */}
-      <section className="py-16 bg-gradient-to-r from-gray-900 to-black">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Ready to Add Magic to Your Event?</h2>
-          <p className="text-xl text-gray-300 mb-8">
-            Book our professional face painting and henna services for your next celebration!
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/contact"
-              className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white font-semibold rounded-full hover:from-orange-700 hover:to-orange-600 transition-all duration-200 transform hover:scale-105"
-            >
-              Book Now
-            </Link>
-            <Link
-              href="/services"
-              className="inline-flex items-center px-8 py-3 border-2 border-orange-500 text-orange-500 font-semibold rounded-full hover:bg-gray-900 transition-all duration-200 transform hover:scale-105"
-            >
-              View Services
-            </Link>
-          </div>
-        </div>
-      </section>
     </div>
   )
+}
+
+export const metadata = {
+  title: 'Gallery - Heart & Hand Face Painting',
+  description: 'Explore our stunning gallery of face painting and henna art creations. See the latest work from Heart & Hand through our Instagram posts.',
 }

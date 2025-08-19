@@ -9,7 +9,7 @@ export function Footer() {
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/services', label: 'Services' },
-    // { href: '/gallery', label: 'Gallery' }, // Hidden for now
+    { href: '/gallery', label: 'Gallery' }, 
     // { href: '/events', label: 'Events' }, // Hidden for now
     { href: '/contact', label: 'Contact' },
   ]
