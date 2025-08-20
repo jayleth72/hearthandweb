@@ -39,23 +39,42 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setSubmitStatus('')
     
-    // Simulate form submission
-    setTimeout(() => {
-      setSubmitStatus('success')
-      setIsSubmitting(false)
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        eventDate: '',
-        eventType: '',
-        guestCount: '',
-        services: [],
-        message: ''
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       })
-    }, 2000)
+
+      const result = await response.json()
+
+      if (response.ok) {
+        setSubmitStatus('success')
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          eventDate: '',
+          eventType: '',
+          guestCount: '',
+          services: [],
+          message: ''
+        })
+      } else {
+        setSubmitStatus('error')
+        console.error('Form submission error:', result.error)
+      }
+    } catch (error) {
+      setSubmitStatus('error')
+      console.error('Network error:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const contactInfo = [
@@ -115,11 +134,17 @@ export default function Contact() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="bg-white rounded-2xl p-8 shadow-xl border border-orange-100"
             >
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Book Your Event</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Contact Us or Book Your Event</h2>
               
               {submitStatus === 'success' && (
                 <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
                   <p className="text-green-800">Thank you! We&apos;ll get back to you within 24 hours.</p>
+                </div>
+              )}
+
+              {submitStatus === 'error' && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-800">Sorry, there was an error sending your message. Please try again or contact us directly.</p>
                 </div>
               )}
 

@@ -6,8 +6,8 @@ import { Heart, Star, Users, Award } from 'lucide-react'
 export default function About() {
   const stats = [
     { icon: Users, number: '500+', label: 'Happy Clients' },
-    { icon: Star, number: '1000+', label: 'Events Completed' },
-    { icon: Award, number: '5+', label: 'Years Experience' },
+    // { icon: Star, number: '1000+', label: 'Events Completed' },
+    { icon: Award, number: '30+', label: 'Years Experience' },
     { icon: Heart, number: '100%', label: 'Satisfaction Rate' },
   ]
 
