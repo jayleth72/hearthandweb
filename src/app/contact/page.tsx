@@ -122,68 +122,63 @@ export default function Contact() {
               </span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Ready to add artistic magic to your event? Let&apos;s discuss your vision and create something beautiful together.
+              Ready to add artistic magic to your event? Contact us directly to discuss your vision and create something beautiful together.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="bg-white rounded-2xl p-8 shadow-xl border border-orange-100"
-            >
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Contact Us or Book Your Event</h2>
-              
-              {submitStatus === 'success' && (
-                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <p className="text-green-800">Thank you! We&apos;ll get back to you within 24 hours.</p>
-                </div>
-              )}
+            {/* Contact Form - HIDDEN but code preserved */}
+            <div className="hidden">
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="bg-white rounded-2xl p-8 shadow-xl border border-orange-100"
+              >
+                <h2 className="text-3xl font-bold text-gray-900 mb-6">Book Your Event</h2>
+                
+                {submitStatus === 'success' && (
+                  <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p className="text-green-800">Thank you! We&apos;ll get back to you within 24 hours.</p>
+                  </div>
+                )}
 
-              {submitStatus === 'error' && (
-                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                  <p className="text-red-800">Sorry, there was an error sending your message. Please try again or contact us directly.</p>
-                </div>
-              )}
+                {submitStatus === 'error' && (
+                  <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-red-800">Sorry, there was an error sending your message. Please try again or contact us directly.</p>
+                  </div>
+                )}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Name *
+                      Your Name
                     </label>
                     <input
                       type="text"
                       name="name"
-                      required
                       value={formData.name}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200"
-                      placeholder="Your full name"
+                      placeholder="John Doe"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Email *
+                      Email Address
                     </label>
                     <input
                       type="email"
                       name="email"
-                      required
                       value={formData.email}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200"
-                      placeholder="your@email.com"
+                      placeholder="you@example.com"
                     />
                   </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Phone
+                      Phone Number
                     </label>
                     <input
                       type="tel"
@@ -206,9 +201,6 @@ export default function Contact() {
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200"
                     />
                   </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Event Type
@@ -241,75 +233,73 @@ export default function Contact() {
                       placeholder="Estimated number"
                     />
                   </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Services Needed
-                  </label>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    {['Face Painting', 'Henna Art', 'Both Services'].map((service) => (
-                      <label key={service} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={formData.services.includes(service)}
-                          onChange={() => handleServiceChange(service)}
-                          className="h-4 w-4 text-pink-500 focus:ring-pink-500 border-gray-300 rounded"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">{service}</span>
-                      </label>
-                    ))}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Services Needed
+                    </label>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      {['Face Painting', 'Henna Art', 'Both Services'].map((service) => (
+                        <label key={service} className="flex items-center">
+                          <input
+                            type="checkbox"
+                            checked={formData.services.includes(service)}
+                            onChange={() => handleServiceChange(service)}
+                            className="h-4 w-4 text-pink-500 focus:ring-pink-500 border-gray-300 rounded"
+                          />
+                          <span className="ml-2 text-sm text-gray-700">{service}</span>
+                        </label>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Additional Details
+                    </label>
+                    <textarea
+                      name="message"
+                      rows={4}
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Tell us about your event, theme preferences, or any special requests..."
+                    />
+                  </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Additional Details
-                  </label>
-                  <textarea
-                    name="message"
-                    rows={4}
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200"
-                    placeholder="Tell us about your event, theme preferences, or any special requests..."
-                  />
-                </div>
+                  <motion.button
+                    type="submit"
+                    disabled={isSubmitting}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full bg-gradient-to-r from-orange-600 to-orange-500 text-white font-bold py-4 px-8 rounded-lg hover:from-rose-600 hover:to-pink-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  >
+                    {isSubmitting ? (
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                    ) : (
+                      <>
+                        <Send className="mr-2" size={20} />
+                        Send Request
+                      </>
+                    )}
+                  </motion.button>
+                </form>
+              </motion.div>
+            </div>
 
-                <motion.button
-                  type="submit"
-                  disabled={isSubmitting}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full bg-gradient-to-r from-orange-600 to-orange-500 text-white font-bold py-4 px-8 rounded-lg hover:from-rose-600 hover:to-pink-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-                >
-                  {isSubmitting ? (
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-                  ) : (
-                    <>
-                      <Send className="mr-2" size={20} />
-                      Send Request
-                    </>
-                  )}
-                </motion.button>
-              </form>
-            </motion.div>
-
-            {/* Contact Information */}
+            {/* Contact Information - Now Full Width */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="space-y-8"
+              className="lg:col-span-2 space-y-8"
             >
               <div className="bg-white rounded-2xl p-8 shadow-xl border border-orange-100">
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">Contact Information</h2>
-                <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {contactInfo.map((info, index) => (
                     <motion.div
                       key={index}
                       whileHover={{ scale: 1.02 }}
-                      className={`flex items-start space-x-4 ${info.action ? 'cursor-pointer' : ''}`}
+                      className={`flex items-start space-x-4 p-4 rounded-lg bg-gray-50 ${info.action ? 'cursor-pointer hover:bg-orange-50' : ''}`}
                       onClick={() => info.action && window.open(info.action)}
                     >
                       <div className="w-12 h-12 bg-gradient-to-r from-orange-600 to-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -326,21 +316,29 @@ export default function Contact() {
 
               <div className="bg-white rounded-2xl p-8 shadow-xl border border-orange-100">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Quick Response Times</h3>
-                <div className="space-y-3 text-gray-600">
-                  <p>• Email inquiries: Within 24 hours</p>
-                  <p>• Phone calls: Same day return</p>
-                  <p>• Rush bookings: Available for urgent requests</p>
-                  <p>• Consultation: Free quote discussions</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-600">
+                  <div className="space-y-3">
+                    <p>• Email inquiries: Within 24 hours</p>
+                    <p>• Phone calls: Same day return</p>
+                  </div>
+                  <div className="space-y-3">
+                    <p>• Rush bookings: Available for urgent requests</p>
+                    <p>• Consultation: Free quote discussions</p>
+                  </div>
                 </div>
               </div>
 
               <div className="bg-gradient-to-r from-orange-600 to-orange-500 rounded-2xl p-8 text-white">
                 <h3 className="text-2xl font-bold mb-4">Booking Tips</h3>
-                <div className="space-y-3 opacity-90">
-                  <p>• Book 2-4 weeks in advance for best availability</p>
-                  <p>• Weekend dates fill up quickly</p>
-                  <p>• Group discounts available for multiple events</p>
-                  <p>• Custom packages can be created for your needs</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 opacity-90">
+                  <div className="space-y-3">
+                    <p>• Book 2-4 weeks in advance for best availability</p>
+                    <p>• Weekend dates fill up quickly</p>
+                  </div>
+                  <div className="space-y-3">
+                    <p>• Group discounts available for multiple events</p>
+                    <p>• Custom packages can be created for your needs</p>
+                  </div>
                 </div>
               </div>
             </motion.div>

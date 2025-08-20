@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { SocialMediaLinks } from './SocialMediaLinks'
@@ -24,18 +23,11 @@ export function Navigation() {
     <nav className="fixed top-0 left-0 right-0 z-40 bg-black/90 backdrop-blur-md border-b border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo with Symbol */}
+          {/* Logo */}
           <Link 
             href="/" 
-            className="flex items-center gap-3 text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent hover:from-orange-700 hover:to-orange-600 transition-all duration-200"
+            className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent"
           >
-            <Image
-              src="/logo/symbol.svg"
-              alt="Heart and Hand Symbol"
-              width={32}
-              height={32}
-              className="flex-shrink-0"
-            />
             Heart and Hand Eco Body Art
           </Link>
 
@@ -99,3 +91,4 @@ export function Navigation() {
     </nav>
   )
 }
+              

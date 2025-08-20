@@ -39,7 +39,7 @@ export async function POST(request: Request) {
       from: 'Heart & Hand Bookings <onboarding@resend.dev>',
       to: [toEmail],
       subject: `New Event Booking Request from ${name}`,
-      reply_to: email,
+      replyTo: email, // Changed from reply_to to replyTo
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="background: linear-gradient(135deg, #ea580c, #f97316); padding: 20px; border-radius: 10px 10px 0 0; color: white;">
