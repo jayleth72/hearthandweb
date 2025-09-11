@@ -78,7 +78,7 @@ export function Footer() {
         {/* Bottom Section */}
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-gray-400 text-sm mb-4 md:mb-0">
-            © {new Date().getFullYear()} Heart and Hand Eco Body Art. All rights reserved.
+            © {new Date().getFullYear()} Hand and Heart Eco Body Art. All rights reserved.
           </div>
           
           <div className="text-gray-400 text-sm">
