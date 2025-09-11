@@ -21,7 +21,7 @@ export function Footer() {
           {/* Brand and Description */}
           <div className="md:col-span-1">
             <h3 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-4">
-              Heart and Hand Eco Body Art
+              Hand & Heart Eco Body Art
             </h3>
             <p className="text-gray-300 mb-6">
               Creating magical moments with beautiful, safe, and temporary art for all your special celebrations.
