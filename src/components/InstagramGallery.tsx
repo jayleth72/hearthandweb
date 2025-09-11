@@ -130,7 +130,7 @@ export function InstagramGallery() {
 
       <div className="text-center pt-8">
         <a
-          href="https://instagram.com/heartandhand"
+          href="https://instagram.com/handhearthenna"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white px-6 py-3 rounded-full hover:from-pink-700 hover:to-purple-700 transition-all duration-200 font-medium"
