@@ -21,23 +21,27 @@ export function InstagramGallery() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    const fetchInstagramPosts = async () => {
+      try {
+        const response = await fetch('/api/instagram-posts')
+        if (!response.ok) {
+          throw new Error('Failed to fetch Instagram posts')
+        }
+        const data = await response.json()
+        if (Array.isArray(data)) {
+          setPosts(data)
+        } else {
+          setPosts([])
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Something went wrong')
+        setPosts([])
+      } finally {
+        setLoading(false)
+      }
+    }
     fetchInstagramPosts()
   }, [])
-
-  const fetchInstagramPosts = async () => {
-    try {
-      const response = await fetch('/api/instagram-posts')
-      if (!response.ok) {
-        throw new Error('Failed to fetch Instagram posts')
-      }
-      const data = await response.json()
-      setPosts(data)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   if (loading) {
     return (
@@ -60,41 +64,40 @@ export function InstagramGallery() {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h2 className="text-3xl font-bold text-white mb-4">Our Latest Work</h2>
-        <p className="text-gray-300 max-w-2xl mx-auto">
-          Follow our artistic journey and see the beautiful face paintings and henna designs we create for our clients.
+    <div className="space-y-8 px-4 sm:px-6 md:px-8 lg:px-16">
+      <div className="text-center pt-10 pb-6 px-4 bg-white rounded-2xl shadow-lg mb-8">
+        <h2 className="text-5xl font-extrabold text-orange-600 mb-4 drop-shadow-2xl tracking-tight uppercase" style={{letterSpacing: '0.05em'}}>Our Artistic Gallery</h2>
+        <h3 className="text-2xl font-bold text-gray-800 mb-4">Face Painting & Henna Highlights</h3>
+        <p className="text-gray-700 max-w-2xl mx-auto text-lg">
+          Explore our artistic journey and discover the beautiful face paintings and henna designs we create for events and celebrations.
         </p>
       </div>
-
       {posts.length === 0 ? (
-        <div className="text-center py-20">
-          <Instagram className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-gray-400 mb-2">No posts found</h3>
+        <div className="text-center py-16 sm:py-20">
+          <Instagram className="w-12 sm:w-16 h-12 sm:h-16 text-gray-500 mx-auto mb-4" />
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-400 mb-2">No posts found</h3>
           <p className="text-gray-500">Check back soon for new artwork!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-2 sm:px-0">
           {posts.map((post, index) => (
             <motion.div
               key={post.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="group relative bg-gray-900 rounded-lg overflow-hidden hover:scale-105 transition-all duration-300"
+              className="group relative bg-white rounded-xl overflow-hidden shadow-lg hover:scale-105 transition-all duration-300"
             >
               <div className="aspect-square relative overflow-hidden">
                 <Image
                   src={post.media_url}
                   alt={post.caption || 'Instagram post'}
                   fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="object-cover rounded-xl"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                 />
-                
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl">
                   <a
                     href={post.permalink}
                     target="_blank"
@@ -105,10 +108,9 @@ export function InstagramGallery() {
                   </a>
                 </div>
               </div>
-
               {post.caption && (
                 <div className="p-4">
-                  <p className="text-gray-300 text-sm overflow-hidden" style={{ 
+                  <p className="text-gray-700 text-sm overflow-hidden" style={{ 
                     display: '-webkit-box', 
                     WebkitLineClamp: 3, 
                     WebkitBoxOrient: 'vertical' 
@@ -118,7 +120,7 @@ export function InstagramGallery() {
                       : post.caption
                     }
                   </p>
-                  <p className="text-gray-500 text-xs mt-2">
+                  <p className="text-gray-400 text-xs mt-2">
                     {new Date(post.timestamp).toLocaleDateString()}
                   </p>
                 </div>
@@ -127,7 +129,6 @@ export function InstagramGallery() {
           ))}
         </div>
       )}
-
       <div className="text-center pt-8">
         <a
           href="https://instagram.com/handhearthenna"

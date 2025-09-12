@@ -50,7 +50,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
       >
         <Navigation />
-        <main>{children}</main>
+        <main className="pb-12 bg-black">{children}</main>
         <Footer />
       </body>
     </html>
