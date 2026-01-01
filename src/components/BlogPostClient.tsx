@@ -1,11 +1,13 @@
 'use client'
 
+import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Navigation } from '@/components/Navigation'
 import { Calendar, User, ArrowLeft, Share2, Heart, MessageCircle } from 'lucide-react'
 import Image from 'next/image'
 import type { BlogPostData } from '@/types/wordpress'
+import { sanitizeWordPressContent } from '@/lib/sanitize'
 
 interface BlogPostClientProps {
   post: BlogPostData | null
@@ -13,6 +15,12 @@ interface BlogPostClientProps {
 }
 
 export default function BlogPostClient({ post, source }: BlogPostClientProps) {
+  // Sanitize HTML content on the client side
+  const sanitizedContent = useMemo(() => {
+    if (!post) return ''
+    return sanitizeWordPressContent(post.content)
+  }, [post])
+
   if (!post) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
@@ -128,7 +136,7 @@ export default function BlogPostClient({ post, source }: BlogPostClientProps) {
             <div className="bg-white rounded-2xl p-8 shadow-lg border border-orange-100">
               <div 
                 className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-h1:text-4xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-gray-600 prose-p:leading-relaxed prose-li:text-gray-600 prose-strong:text-gray-900"
-                dangerouslySetInnerHTML={{ __html: post.content }}
+                dangerouslySetInnerHTML={{ __html: sanitizedContent }}
               />
             </div>
           </motion.article>

@@ -7,7 +7,8 @@ import type {
 } from '@/types/wordpress'
 
 // WordPress GraphQL endpoint - should be set in environment variables
-const WORDPRESS_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.WORDPRESS_API_URL || ''
+// Use server-side only environment variable for security
+const WORDPRESS_API_URL = process.env.WORDPRESS_API_URL || ''
 
 // Create Apollo Client instance
 const createApolloClient = () => {
@@ -19,19 +20,23 @@ const createApolloClient = () => {
   return new ApolloClient({
     link: new HttpLink({
       uri: WORDPRESS_API_URL,
-      credentials: 'same-origin',
+      // Use 'omit' for public APIs or 'include' for authenticated requests
+      credentials: 'omit',
     }),
     cache: new InMemoryCache(),
     defaultOptions: {
       watchQuery: {
-        fetchPolicy: 'no-cache',
+        fetchPolicy: 'cache-first',
       },
       query: {
-        fetchPolicy: 'no-cache',
+        fetchPolicy: 'cache-first',
       },
     },
   })
 }
+
+// Maximum number of posts to fetch (configurable via environment)
+const MAX_POSTS = parseInt(process.env.WORDPRESS_MAX_POSTS || '100', 10)
 
 // GraphQL query to get all posts
 const GET_ALL_POSTS = gql`
@@ -158,7 +163,7 @@ export async function getAllWordPressPosts(): Promise<BlogPostData[]> {
   try {
     const { data } = await client.query<WordPressPostsResponse>({
       query: GET_ALL_POSTS,
-      variables: { first: 100 }
+      variables: { first: MAX_POSTS }
     })
 
     if (!data || !data.posts) {
