@@ -6,7 +6,7 @@ A professional Next.js website for Heart & Hand, a face painting and henna tatto
 
 - **Beautiful Landing Page** with fade-in logo animation
 - **Mobile-Responsive Design** optimized for all devices
-- **Blog System** with markdown support for content management
+- **Blog System** with WordPress GraphQL integration and markdown fallback
 - **Service Pages** showcasing face painting and henna art offerings
 - **Contact Form** for booking inquiries and customer communication
 - **About Page** telling the business story and showcasing expertise
@@ -19,6 +19,7 @@ A professional Next.js website for Heart & Hand, a face painting and henna tatto
 - **TypeScript** - Type-safe development
 - **Tailwind CSS** - Utility-first CSS framework
 - **Framer Motion** - Smooth animations and transitions
+- **Apollo Client** - GraphQL client for WordPress integration
 - **Lucide React** - Beautiful icons
 - **Gray Matter** - Markdown frontmatter parsing
 - **MDX** - Markdown with JSX components
@@ -88,7 +89,25 @@ hearthandweb/
 
 ## 📝 Content Management
 
-### Adding Blog Posts
+### Blog System
+
+The blog supports two modes:
+
+1. **WordPress Mode** (Recommended): Fetch posts from WordPress via GraphQL
+2. **Local Mode** (Fallback): Use markdown files in `content/blog/`
+
+See [WORDPRESS_SETUP.md](WORDPRESS_SETUP.md) for detailed WordPress integration guide.
+
+### Using WordPress (Recommended)
+
+1. Set up WordPress with WPGraphQL plugin
+2. Add environment variable:
+   ```bash
+   WORDPRESS_API_URL=https://your-wordpress-site.com/graphql
+   ```
+3. Create posts in WordPress - they'll automatically appear on the site
+
+### Using Local Markdown Files (Fallback)
 
 1. Create a new markdown file in `content/blog/`
 2. Add frontmatter with required fields:
@@ -179,8 +198,13 @@ Create a `.env.local` file for local development:
 
 ```env
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
-# Add other environment variables as needed
+
+# Optional: WordPress GraphQL API endpoint
+# WORDPRESS_API_URL=https://your-wordpress-site.com/graphql
+# NEXT_PUBLIC_WORDPRESS_API_URL=https://your-wordpress-site.com/graphql
 ```
+
+See `.env.example` for more configuration options.
 
 ## 🎯 SEO & Performance
 
