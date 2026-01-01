@@ -12,7 +12,17 @@ export function sanitizeHtml(html: string): string {
     return html
   }
 
-  return DOMPurify.sanitize(html, {
+  // Add hook to ensure external links are safe
+  DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+    // Set all elements owning target to target=_blank
+    if ('target' in node) {
+      node.setAttribute('target', '_blank')
+      // Prevent reverse tabnabbing
+      node.setAttribute('rel', 'noopener noreferrer')
+    }
+  })
+
+  const sanitized = DOMPurify.sanitize(html, {
     ALLOWED_TAGS: [
       'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
       'p', 'br', 'hr',
@@ -29,11 +39,13 @@ export function sanitizeHtml(html: string): string {
       'class', 'id'
     ],
     ALLOW_DATA_ATTR: false,
-    // Ensure links open safely
-    ADD_ATTR: ['target'],
-    // Add rel="noopener noreferrer" to external links
     SAFE_FOR_TEMPLATES: true,
   })
+
+  // Remove the hook after use to avoid affecting other sanitization calls
+  DOMPurify.removeHook('afterSanitizeAttributes')
+
+  return sanitized
 }
 
 /**
