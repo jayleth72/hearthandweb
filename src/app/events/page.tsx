@@ -248,7 +248,7 @@ export default function EventsPage() {
               <h2 className="text-3xl font-bold text-gray-900">Past Events Showcase</h2>
             </div>
             <p className="text-lg text-gray-600 mb-8">
-              See the magic we've brought to events across the region. From festivals to corporate gatherings, we make every occasion special.
+              See the magic Hand & Heart has brought to events across the region. From festivals to corporate gatherings, we make every occasion special.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -390,7 +390,7 @@ export default function EventsPage() {
                 Ready to Make Your Event Unforgettable?
               </h2>
               <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                Whether it's a festival, corporate event, or private party, we bring professional artistry and engaging entertainment to every occasion.
+                Whether it&apos;s a festival, corporate event, or private party, we bring professional artistry and engaging entertainment to every occasion.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link

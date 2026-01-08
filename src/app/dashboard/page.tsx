@@ -54,7 +54,7 @@ export default function DashboardPage() {
                 Welcome back, {user?.displayName}! 👋
               </h2>
               <p className="text-gray-600 mb-4">
-                You're logged in as <span className="font-medium text-pink-600">{user?.email}</span>
+                You&apo;re logged in as <span className="font-medium text-pink-600">{user?.email}</span>
               </p>
               <div className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
                 ✓ Authenticated
