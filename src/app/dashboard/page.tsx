@@ -77,7 +77,7 @@ export default function DashboardPage() {
               </div>
               <h3 className="ml-4 text-lg font-semibold text-gray-900">Events</h3>
             </div>
-            <p className="text-gray-600 text-sm">View and manage upcoming events</p>
+            <p className="text-gray-600 text-sm">View and manage upcoming Events</p>
           </Link>
 
           <Link 
