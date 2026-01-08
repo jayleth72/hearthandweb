@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "../components/Navigation";
 import { Footer } from "../components/Footer";
+import { WordPressAuthProvider } from "../components/WordPressAuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,9 +50,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
       >
-        <Navigation />
-        <main className="pb-12 bg-black">{children}</main>
-        <Footer />
+        <WordPressAuthProvider>
+          <Navigation />
+          <main className="pb-12 bg-black">{children}</main>
+          <Footer />
+        </WordPressAuthProvider>
       </body>
     </html>
   );

@@ -15,7 +15,20 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'instagram.com',
       },
+      {
+        protocol: 'http',
+        hostname: 'handheartecobodyart.local',
+      },
+      
     ],
+  },
+   async rewrites() {
+    return [
+      {
+        source: '/api/wp/:path*',
+        destination: 'https://cmshandheart.flywheelsites.com*',
+      },
+    ]
   },
 }
 
