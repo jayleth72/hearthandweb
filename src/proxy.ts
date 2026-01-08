@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 const WORDPRESS_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://your-wordpress-site.com';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const token = request.cookies.get('wp_auth_token')?.value;
   const { pathname } = request.nextUrl;
 
