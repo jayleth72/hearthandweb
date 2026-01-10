@@ -133,8 +133,10 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
     if (!isInitialized) return; // Don't save until initialized
     
     const timeoutId = setTimeout(async () => {
-      if (checklist.eventName && checklist.items.length > 0) {
+      if (checklist.eventName && checklist.eventName.trim() !== '' && checklist.items.length > 0) {
         setIsSaving(true);
+        console.log('Auto-saving checklist:', checklist.id, checklist.eventName);
+        
         try {
           const response = await fetch('/api/checklists', {
             method: 'POST',
@@ -142,17 +144,26 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
             body: JSON.stringify(checklist)
           });
           
+          console.log('Save response status:', response.status);
+          
           if (response.ok) {
             const data = await response.json();
+            console.log('Save response data:', data);
             setLastSaved(new Date());
             
             // Update ID if this was a new checklist (don't trigger re-save)
             if (data.checklist.id !== checklist.id) {
+              console.log('Updating checklist ID from', checklist.id, 'to', data.checklist.id);
               checklist.id = data.checklist.id; // Update directly without state change
             }
+          } else {
+            const errorData = await response.json();
+            console.error('Save failed:', errorData);
+            throw new Error(errorData.message || 'Failed to save checklist');
           }
         } catch (error) {
           console.error('Error saving checklist:', error);
+          alert('Failed to save checklist. Check console for details.');
         } finally {
           setIsSaving(false);
         }

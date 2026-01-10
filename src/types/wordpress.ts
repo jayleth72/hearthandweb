@@ -139,3 +139,58 @@ export interface WordPressEventsResponse {
 export interface WordPressEventResponse {
   event: WordPressEvent
 }
+
+// Checklist Types
+export interface ChecklistItem {
+  text: string
+  completed: boolean
+  category: string
+}
+
+export interface ChecklistACF {
+  eventDate?: string
+  checklistItems?: ChecklistItem[]
+  lastModified?: string
+}
+
+export interface WordPressChecklist {
+  id: string
+  databaseId: number
+  title: string
+  date: string
+  modified: string
+  checklistDetails?: ChecklistACF
+}
+
+export interface WordPressChecklistEdge {
+  node: WordPressChecklist
+}
+
+export interface WordPressChecklistsResponse {
+  checklists: {
+    edges: WordPressChecklistEdge[]
+    pageInfo: {
+      hasNextPage: boolean
+      hasPreviousPage: boolean
+      startCursor: string
+      endCursor: string
+    }
+  }
+}
+
+export interface WordPressChecklistResponse {
+  checklist: WordPressChecklist
+}
+
+export interface CreateChecklistInput {
+  title: string
+  eventDate?: string
+  items?: ChecklistItem[]
+}
+
+export interface UpdateChecklistInput {
+  id: number
+  title?: string
+  eventDate?: string
+  items?: ChecklistItem[]
+}

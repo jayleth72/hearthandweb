@@ -1,11 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readChecklists, saveChecklist, deleteChecklist } from '@/lib/checklistStorage';
+import {
+  getAllChecklists,
+  getChecklistById,
+  createChecklist,
+  updateChecklist,
+  deleteChecklist as deleteWordPressChecklist
+} from '@/lib/wordpress';
+import type { ChecklistItem } from '@/types/wordpress';
 
 // GET - Fetch all checklists
 export async function GET(request: NextRequest) {
   try {
-    const checklists = await readChecklists();
-    return NextResponse.json({ checklists });
+    const checklists = await getAllChecklists();
+    
+    // Transform WordPress checklists to match expected format
+    const transformedChecklists = checklists.map(checklist => {
+      // Convert date from ISO format to YYYY-MM-DD format for date input
+      let eventDate = checklist.checklistDetails?.eventDate || '';
+      if (eventDate && eventDate.includes('T')) {
+        eventDate = eventDate.split('T')[0];
+      }
+      
+      return {
+        id: checklist.databaseId.toString(),
+        eventName: checklist.title,
+        eventDate: eventDate,
+        items: (checklist.checklistDetails?.checklistItems || []).map((item, index) => ({
+          id: `${checklist.databaseId}-${index}`,
+          text: item.text,
+          completed: item.completed,
+          category: Array.isArray(item.category) ? item.category[0] : item.category
+        })),
+        lastModified: checklist.checklistDetails?.lastModified || checklist.modified
+      };
+    });
+    
+    return NextResponse.json({ checklists: transformedChecklists });
   } catch (error) {
     console.error('Error reading checklists:', error);
     return NextResponse.json(
@@ -21,16 +51,64 @@ export async function POST(request: NextRequest) {
   
   try {
     checklistData = await request.json();
-    const savedChecklist = await saveChecklist(checklistData);
     
-    return NextResponse.json({
-      success: true,
-      checklist: savedChecklist
+    console.log('Received checklist data:', JSON.stringify(checklistData, null, 2));
+    
+    // Validate required fields
+    if (!checklistData.eventName || checklistData.eventName.trim() === '') {
+      return NextResponse.json(
+        { error: 'Event name is required' },
+        { status: 400 }
+      );
+    }
+    
+    // If updating existing checklist
+    if (checklistData.id && checklistData.id !== 'new' && !isNaN(parseInt(checklistData.id))) {
+      console.log('Updating existing checklist with ID:', checklistData.id);
+      
+      const success = await updateChecklist({
+        id: parseInt(checklistData.id),
+        title: checklistData.eventName,
+        eventDate: checklistData.eventDate || '',
+        items: checklistData.items || []
+      });
+      
+      if (success) {
+        console.log('Successfully updated checklist');
+        return NextResponse.json({
+          success: true,
+          checklist: checklistData
+        });
+      } else {
+        throw new Error('Failed to update checklist in WordPress');
+      }
+    }
+    
+    // If creating new checklist
+    console.log('Creating new checklist');
+    const newId = await createChecklist({
+      title: checklistData.eventName || 'New Checklist',
+      eventDate: checklistData.eventDate || '',
+      items: checklistData.items || []
     });
+    
+    if (newId) {
+      console.log('Successfully created checklist with ID:', newId);
+      return NextResponse.json({
+        success: true,
+        checklist: {
+          ...checklistData,
+          id: newId.toString()
+        }
+      });
+    } else {
+      throw new Error('Failed to create checklist in WordPress');
+    }
   } catch (error: any) {
     console.error('Error saving checklist:', error);
+    console.error('Stack:', error.stack);
     return NextResponse.json(
-      { error: 'Failed to save checklist', message: error.message },
+      { error: 'Failed to save checklist', message: error.message, details: error.toString() },
       { status: 500 }
     );
   }
@@ -49,8 +127,13 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    await deleteChecklist(id);
-    return NextResponse.json({ success: true });
+    const success = await deleteWordPressChecklist(parseInt(id));
+    
+    if (success) {
+      return NextResponse.json({ success: true });
+    } else {
+      throw new Error('Failed to delete checklist');
+    }
   } catch (error) {
     console.error('Error deleting checklist:', error);
     return NextResponse.json(

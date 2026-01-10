@@ -6,7 +6,13 @@ import type {
   WordPressPost,
   WordPressEvent,
   WordPressEventsResponse,
-  WordPressEventResponse
+  WordPressEventResponse,
+  WordPressChecklist,
+  WordPressChecklistsResponse,
+  WordPressChecklistResponse,
+  CreateChecklistInput,
+  UpdateChecklistInput,
+  ChecklistItem
 } from '@/types/wordpress'
 
 // Initialize GraphQL client
@@ -513,4 +519,267 @@ export function formatEventDate(dateString: string): string {
     month: 'long',
     day: 'numeric'
   })
+}
+
+// ============================================
+// CHECKLIST QUERIES AND MUTATIONS
+// ============================================
+
+const GET_ALL_CHECKLISTS = `
+  query GetAllChecklists($first: Int = 100) {
+    checklists(first: $first, where: { orderby: { field: MODIFIED, order: DESC } }) {
+      edges {
+        node {
+          id
+          databaseId
+          title
+          date
+          modified
+          checklistDetails {
+            eventDate
+            checklistItems {
+              text
+              completed
+              category
+            }
+            lastModified
+          }
+        }
+      }
+    }
+  }
+`
+
+const GET_CHECKLIST_BY_ID = `
+  query GetChecklistById($id: ID!) {
+    checklist(id: $id, idType: DATABASE_ID) {
+      id
+      databaseId
+      title
+      date
+      modified
+      checklistDetails {
+        eventDate
+        checklistItems {
+          text
+          completed
+          category
+        }
+        lastModified
+      }
+    }
+  }
+`
+
+const CREATE_CHECKLIST = `
+  mutation CreateChecklist($title: String!, $eventDate: String, $items: String) {
+    createChecklist(input: {
+      title: $title
+      status: PUBLISH
+    }) {
+      checklist {
+        id
+        databaseId
+        title
+      }
+    }
+  }
+`
+
+const UPDATE_CHECKLIST = `
+  mutation UpdateChecklist($id: ID!, $title: String, $eventDate: String, $items: String) {
+    updateChecklist(input: {
+      id: $id
+      title: $title
+    }) {
+      checklist {
+        id
+        databaseId
+        title
+        modified
+      }
+    }
+  }
+`
+
+const DELETE_CHECKLIST = `
+  mutation DeleteChecklist($id: ID!) {
+    deleteChecklist(input: {
+      id: $id
+    }) {
+      deletedId
+    }
+  }
+`
+
+// Get all checklists
+export async function getAllChecklists(): Promise<WordPressChecklist[]> {
+  try {
+    const data = await client.request<WordPressChecklistsResponse>(GET_ALL_CHECKLISTS, { first: 100 })
+    return data.checklists.edges.map(edge => edge.node)
+  } catch (error) {
+    console.error('Error fetching checklists:', error)
+    return []
+  }
+}
+
+// Get checklist by ID
+export async function getChecklistById(id: number): Promise<WordPressChecklist | null> {
+  try {
+    const data = await client.request<WordPressChecklistResponse>(GET_CHECKLIST_BY_ID, { id })
+    return data.checklist
+  } catch (error) {
+    console.error('Error fetching checklist:', error)
+    return null
+  }
+}
+
+// Create new checklist
+export async function createChecklist(input: CreateChecklistInput): Promise<number | null> {
+  try {
+    console.log('Creating checklist with input:', input);
+    
+    const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL || ''
+    
+    if (!wpUrl) {
+      throw new Error('NEXT_PUBLIC_WORDPRESS_URL is not configured');
+    }
+    
+    // Use our custom REST API endpoint to create the checklist
+    const createUrl = `${wpUrl}/wp-json/hearthand/v1/checklist/create`;
+    console.log('Creating checklist at:', createUrl);
+    
+    const payload = {
+      title: input.title,
+      event_date: input.eventDate || '',
+      checklist_items: input.items || []
+    };
+    
+    console.log('Sending payload:', JSON.stringify(payload, null, 2));
+    
+    const createResponse = await fetch(createUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+    
+    console.log('Create response status:', createResponse.status);
+    
+    if (!createResponse.ok) {
+      const errorText = await createResponse.text();
+      console.error('Failed to create checklist:', createResponse.status, errorText);
+      throw new Error(`Failed to create checklist: ${createResponse.status} - ${errorText}`);
+    }
+    
+    const createResult = await createResponse.json();
+    const checklistId = createResult.post_id;
+    console.log('Created checklist with ID:', checklistId, 'Response:', createResult);
+    
+    return checklistId
+  } catch (error) {
+    console.error('Error creating checklist:', error)
+    return null
+  }
+}
+
+// Update existing checklist
+export async function updateChecklist(input: UpdateChecklistInput): Promise<boolean> {
+  try {
+    console.log('Updating checklist with input:', input);
+    
+    const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL || ''
+    
+    if (!wpUrl) {
+      throw new Error('NEXT_PUBLIC_WORDPRESS_URL is not configured');
+    }
+    
+    // Use REST API to update the post title if needed
+    if (input.title) {
+      const updateUrl = `${wpUrl}/wp-json/wp/v2/checklist/${input.id}`;
+      console.log('Updating checklist title at:', updateUrl);
+      
+      const updateResponse = await fetch(updateUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: input.title
+        })
+      });
+      
+      if (!updateResponse.ok) {
+        const errorText = await updateResponse.text();
+        console.error('Failed to update checklist title:', updateResponse.status, errorText);
+        // Continue even if title update fails
+      }
+    }
+    
+    // Update ACF fields
+    await updateChecklistACF(input.id, input.eventDate, input.items)
+    
+    return true
+  } catch (error) {
+    console.error('Error updating checklist:', error)
+    return false
+  }
+}
+
+// Delete checklist
+export async function deleteChecklist(id: number): Promise<boolean> {
+  try {
+    await client.request(DELETE_CHECKLIST, { id })
+    return true
+  } catch (error) {
+    console.error('Error deleting checklist:', error)
+    return false
+  }
+}
+
+// Helper function to update ACF fields via custom REST API endpoint
+async function updateChecklistACF(id: number, eventDate?: string, items?: ChecklistItem[]): Promise<void> {
+  try {
+    const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL || ''
+    
+    if (!wpUrl) {
+      throw new Error('NEXT_PUBLIC_WORDPRESS_URL is not configured');
+    }
+    
+    const url = `${wpUrl}/wp-json/hearthand/v1/checklist/${id}`;
+    console.log('Updating ACF fields for checklist:', id);
+    console.log('WordPress URL:', url);
+    console.log('Event date:', eventDate);
+    console.log('Items count:', items?.length || 0);
+    
+    const payload = {
+      event_date: eventDate || '',
+      checklist_items: items || []
+    };
+    
+    console.log('Sending payload:', JSON.stringify(payload, null, 2));
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+    
+    console.log('Response status:', response.status);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('ACF update failed:', response.status, errorText);
+      throw new Error(`Failed to update ACF fields: ${response.status} - ${errorText}`);
+    }
+    
+    const result = await response.json();
+    console.log('ACF update response:', result);
+  } catch (error) {
+    console.error('Error updating ACF fields:', error);
+    throw error;
+  }
 }
