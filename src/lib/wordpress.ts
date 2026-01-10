@@ -730,7 +730,36 @@ export async function updateChecklist(input: UpdateChecklistInput): Promise<bool
 // Delete checklist
 export async function deleteChecklist(id: number): Promise<boolean> {
   try {
-    await client.request(DELETE_CHECKLIST, { id })
+    console.log('Deleting checklist with ID:', id);
+    
+    const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL || ''
+    
+    if (!wpUrl) {
+      throw new Error('NEXT_PUBLIC_WORDPRESS_URL is not configured');
+    }
+    
+    // Use our custom REST API endpoint to delete the checklist
+    const deleteUrl = `${wpUrl}/wp-json/hearthand/v1/checklist/${id}/delete`;
+    console.log('Deleting checklist at:', deleteUrl);
+    
+    const deleteResponse = await fetch(deleteUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    console.log('Delete response status:', deleteResponse.status);
+    
+    if (!deleteResponse.ok) {
+      const errorText = await deleteResponse.text();
+      console.error('Failed to delete checklist:', deleteResponse.status, errorText);
+      throw new Error(`Failed to delete checklist: ${deleteResponse.status} - ${errorText}`);
+    }
+    
+    const deleteResult = await deleteResponse.json();
+    console.log('Successfully deleted checklist:', deleteResult);
+    
     return true
   } catch (error) {
     console.error('Error deleting checklist:', error)

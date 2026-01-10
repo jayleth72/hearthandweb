@@ -181,6 +181,21 @@ function hh_register_checklist_rest_api() {
             ),
         ),
     ));
+    
+    // Delete checklist endpoint
+    register_rest_route('hearthand/v1', '/checklist/(?P<id>\d+)/delete', array(
+        'methods' => 'POST',
+        'callback' => 'hh_delete_checklist',
+        'permission_callback' => '__return_true', // Allow public access for now
+        'args' => array(
+            'id' => array(
+                'required' => true,
+                'validate_callback' => function($param) {
+                    return is_numeric($param);
+                }
+            ),
+        ),
+    ));
 }
 add_action('rest_api_init', 'hh_register_checklist_rest_api');
 
@@ -285,6 +300,37 @@ function hh_update_checklist_data($request) {
         'message' => 'Checklist updated successfully',
         'event_date' => get_field('event_date', $post_id),
         'items_count' => is_array($checklist_items) ? count($checklist_items) : 0
+    );
+}
+
+function hh_delete_checklist($request) {
+    error_log('Heart & Hand: REST API endpoint called for checklist deletion');
+    
+    $post_id = $request->get_param('id');
+    
+    error_log('Deleting checklist ID: ' . $post_id);
+    
+    // Verify post exists and is a checklist
+    $post = get_post($post_id);
+    if (!$post || $post->post_type !== 'checklist') {
+        error_log('Invalid checklist ID: ' . $post_id);
+        return new WP_Error('invalid_post', 'Invalid checklist ID', array('status' => 404));
+    }
+    
+    // Delete the post (move to trash)
+    $result = wp_trash_post($post_id);
+    
+    if (!$result) {
+        error_log('Failed to delete checklist: ' . $post_id);
+        return new WP_Error('delete_failed', 'Failed to delete checklist', array('status' => 500));
+    }
+    
+    error_log('Successfully deleted checklist: ' . $post_id);
+    
+    return array(
+        'success' => true,
+        'post_id' => $post_id,
+        'message' => 'Checklist deleted successfully'
     );
 }
 
