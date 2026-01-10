@@ -1,135 +1,17 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { Calendar, MapPin, Clock, Users, Star, ArrowRight, Image as ImageIcon } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Navigation } from '@/components/Navigation'
+import type { WordPressEvent } from '@/types/wordpress'
+import { getEventImages } from '@/lib/wordpress'
 
 type EventType = 'festival' | 'party' | 'corporate' | 'community'
 
-interface Event {
-  id: string
-  title: string
-  date: string
-  time: string
-  location: string
-  address: string
-  description: string
-  type: EventType
-  featured?: boolean
-}
-
-interface PastEvent {
-  id: string
-  title: string
-  date: string
-  location: string
-  description: string
-  images: string[]
-  attendees?: number
-  type: EventType
-}
-
-const upcomingEvents: Event[] = [
-  {
-    id: '1',
-    title: 'Summer Arts Festival 2026',
-    date: '2026-08-15',
-    time: '10:00 AM - 6:00 PM',
-    location: 'Central Park Community Center',
-    address: '123 Park Avenue, Your City',
-    description: 'Join us at the annual Summer Arts Festival! We\'ll be offering face painting and henna artistry for all ages. Come find our booth near the main stage area.',
-    type: 'festival',
-    featured: true
-  },
-  {
-    id: '2',
-    title: 'Spring Market Day',
-    date: '2026-03-20',
-    time: '9:00 AM - 4:00 PM',
-    location: 'Downtown Farmers Market',
-    address: '456 Market Street, Your City',
-    description: 'Visit our booth at the Spring Market! Face painting for kids and beautiful henna designs for all ages.',
-    type: 'community'
-  },
-  {
-    id: '3',
-    title: 'Corporate Family Fun Day',
-    date: '2026-06-12',
-    time: '11:00 AM - 4:00 PM',
-    location: 'Available for Booking',
-    address: 'Your Location',
-    description: 'Book us for your corporate event! We provide professional face painting and henna services perfect for company picnics, team building events, and family days.',
-    type: 'corporate',
-    featured: true
-  }
-]
-
-const pastEvents: PastEvent[] = [
-  {
-    id: '1',
-    title: 'Winter Wonderland Festival 2025',
-    date: '2025-12-15',
-    location: 'City Plaza',
-    description: 'Amazing winter-themed face painting for over 200 children at the annual Winter Wonderland Festival. Created snowflakes, reindeer, and festive designs.',
-    images: ['/placeholder-gallery/placeholder-1.jpg', '/placeholder-gallery/placeholder-2.jpg', '/placeholder-gallery/placeholder-3.jpg'],
-    attendees: 200,
-    type: 'festival'
-  },
-  {
-    id: '2',
-    title: 'Children\'s Hospital Charity Gala',
-    date: '2025-11-08',
-    location: 'Grand Hotel Ballroom',
-    description: 'Provided elegant henna designs for guests at this upscale charity event, helping raise funds for the Children\'s Hospital.',
-    images: ['/placeholder-gallery/placeholder-4.jpg', '/placeholder-gallery/placeholder-5.jpg'],
-    attendees: 150,
-    type: 'corporate'
-  },
-  {
-    id: '3',
-    title: 'Halloween Spooktacular 2025',
-    date: '2025-10-31',
-    location: 'Downtown Square',
-    description: 'Created spooky and fun Halloween designs for trick-or-treaters. Zombies, vampires, witches, and more!',
-    images: ['/placeholder-gallery/placeholder-6.jpg', '/placeholder-gallery/placeholder-1.jpg', '/placeholder-gallery/placeholder-2.jpg'],
-    attendees: 300,
-    type: 'festival'
-  },
-  {
-    id: '4',
-    title: 'Tech Corp Annual Picnic',
-    date: '2025-09-15',
-    location: 'Riverside Park',
-    description: 'Entertainment for employees and their families at this corporate event. Face painting station was a huge hit with kids of all ages!',
-    images: ['/placeholder-gallery/placeholder-3.jpg', '/placeholder-gallery/placeholder-4.jpg'],
-    attendees: 180,
-    type: 'corporate'
-  },
-  {
-    id: '5',
-    title: 'Summer Music Festival 2025',
-    date: '2025-07-22',
-    location: 'Lakeside Amphitheater',
-    description: 'Face painting and henna booth at the annual music festival. Created vibrant festival-style designs all day long!',
-    images: ['/placeholder-gallery/placeholder-5.jpg', '/placeholder-gallery/placeholder-6.jpg', '/placeholder-gallery/placeholder-1.jpg'],
-    attendees: 250,
-    type: 'festival'
-  },
-  {
-    id: '6',
-    title: 'Spring Community Fair',
-    date: '2025-05-10',
-    location: 'Community Center',
-    description: 'Supporting our local community with face painting for families. Butterflies, rainbows, and spring-themed designs were favorites!',
-    images: ['/placeholder-gallery/placeholder-2.jpg', '/placeholder-gallery/placeholder-3.jpg'],
-    attendees: 120,
-    type: 'community'
-  }
-]
-
-const getEventTypeColor = (type: Event['type']) => {
+const getEventTypeColor = (type: EventType) => {
   switch (type) {
     case 'festival': return 'bg-purple-500/20 text-purple-300 border-purple-500/30'
     case 'party': return 'bg-pink-500/20 text-pink-300 border-pink-500/30'
@@ -150,7 +32,76 @@ const formatDate = (dateString: string) => {
 }
 
 export default function EventsPage() {
-  const featuredEvents = upcomingEvents.filter(event => event.featured)
+  const [upcomingEvents, setUpcomingEvents] = useState<WordPressEvent[]>([])
+  const [pastEvents, setPastEvents] = useState<WordPressEvent[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setLoading(true)
+        
+        // Fetch upcoming events
+        const upcomingRes = await fetch('/api/events?filter=upcoming')
+        const upcomingData = await upcomingRes.json()
+        
+        // Fetch past events
+        const pastRes = await fetch('/api/events?filter=past')
+        const pastData = await pastRes.json()
+        
+        if (upcomingData.success) {
+          setUpcomingEvents(upcomingData.events)
+        }
+        
+        if (pastData.success) {
+          setPastEvents(pastData.events)
+        }
+      } catch (err) {
+        console.error('Error fetching events:', err)
+        setError('Failed to load events. Please try again later.')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchEvents()
+  }, [])
+
+  const featuredEvents = upcomingEvents.filter(event => event.eventDetails?.isFeatured)
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+        <Navigation />
+        <div className="pt-32 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-orange-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading events...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+        <Navigation />
+        <div className="pt-32 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-red-600 mb-4">{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
@@ -252,59 +203,70 @@ export default function EventsPage() {
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {pastEvents.map((event, index) => (
-                <motion.div
-                  key={event.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
-                  className="bg-white rounded-2xl shadow-lg border border-orange-100 overflow-hidden hover:shadow-xl transition-shadow duration-300"
-                >
-                  {/* Image Gallery */}
-                  <div className="grid grid-cols-3 gap-1">
-                    {event.images.map((image, idx) => (
-                      <div key={idx} className="aspect-square relative">
-                        <Image
-                          src={image}
-                          alt={`${event.title} - Image ${idx + 1}`}
-                          fill
-                          className="object-cover"
-                        />
+              {pastEvents.map((event, index) => {
+                const eventType = (event.eventDetails?.eventType || 'community') as EventType
+                const eventImages = getEventImages(event)
+                return (
+                  <motion.div
+                    key={event.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
+                    className="bg-white rounded-2xl shadow-lg border border-orange-100 overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                  >
+                    {/* Image Gallery */}
+                    {eventImages.length > 0 && (
+                      <div className={`grid gap-1 ${eventImages.length === 1 ? 'grid-cols-1' : eventImages.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
+                        {eventImages.slice(0, 6).map((image, idx) => (
+                          <div key={idx} className="aspect-square relative">
+                            <Image
+                              src={image.sourceUrl}
+                              alt={image.altText || `${event.title} - Image ${idx + 1}`}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                  
-                  {/* Event Details */}
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getEventTypeColor(event.type)}`}>
-                        {event.type.charAt(0).toUpperCase() + event.type.slice(1)}
-                      </span>
-                      {event.attendees && (
-                        <div className="flex items-center gap-2 text-gray-600">
-                          <Users size={16} />
-                          <span className="text-sm font-medium">{event.attendees}+ attendees</span>
+                    )}
+                    
+                    {/* Event Details */}
+                    <div className="p-6">
+                      <div className="flex items-center justify-between mb-3">
+                        <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getEventTypeColor(eventType)}`}>
+                          {eventType.charAt(0).toUpperCase() + eventType.slice(1)}
+                        </span>
+                        {event.eventDetails?.attendeeCount && (
+                          <div className="flex items-center gap-2 text-gray-600">
+                            <Users size={16} />
+                            <span className="text-sm font-medium">{event.eventDetails.attendeeCount}+ attendees</span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
+                      
+                      <div className="space-y-2 mb-4">
+                        <div className="flex items-center gap-2 text-gray-600 text-sm">
+                          <Calendar size={16} className="text-orange-500" />
+                          <span>{event.eventDetails?.eventDate ? formatDate(event.eventDetails.eventDate) : formatDate(event.date)}</span>
                         </div>
-                      )}
-                    </div>
-                    
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
-                    
-                    <div className="space-y-2 mb-4">
-                      <div className="flex items-center gap-2 text-gray-600 text-sm">
-                        <Calendar size={16} className="text-orange-500" />
-                        <span>{formatDate(event.date)}</span>
+                        {event.eventDetails?.locationName && (
+                          <div className="flex items-center gap-2 text-gray-600 text-sm">
+                            <MapPin size={16} className="text-orange-500" />
+                            <span>{event.eventDetails.locationName}</span>
+                          </div>
+                        )}
                       </div>
-                      <div className="flex items-center gap-2 text-gray-600 text-sm">
-                        <MapPin size={16} className="text-orange-500" />
-                        <span>{event.location}</span>
-                      </div>
+                      
+                      <div 
+                        className="text-gray-600 prose prose-sm max-w-none"
+                        dangerouslySetInnerHTML={{ __html: event.excerpt || '' }}
+                      />
                     </div>
-                    
-                    <p className="text-gray-600">{event.description}</p>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                )
+              })}
             </div>
           </motion.section>
 
@@ -321,60 +283,62 @@ export default function EventsPage() {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {upcomingEvents.map((event, index) => (
-                <motion.div
-                  key={event.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.7 + index * 0.1 }}
-                  className={`bg-white rounded-2xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 ${
-                    event.featured ? 'border-orange-500 ring-2 ring-orange-200' : 'border-orange-100'
-                  }`}
-                >
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getEventTypeColor(event.type)}`}>
-                        {event.type.charAt(0).toUpperCase() + event.type.slice(1)}
-                      </span>
-                      {event.featured && (
-                        <Star className="text-orange-500 fill-orange-500" size={20} />
-                      )}
-                    </div>
-                    
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">{event.title}</h3>
-                    
-                    <div className="space-y-3 mb-4">
-                      <div className="flex items-center gap-2 text-gray-600">
-                        <Calendar size={16} className="text-orange-500" />
-                        <span className="text-sm">{formatDate(event.date)}</span>
+              {upcomingEvents.map((event, index) => {
+                const eventType = (event.eventDetails?.eventType || 'community') as EventType
+                return (
+                  <motion.div
+                    key={event.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.7 + index * 0.1 }}
+                    className={`bg-white rounded-2xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 ${
+                      event.eventDetails?.isFeatured ? 'border-orange-500 ring-2 ring-orange-200' : 'border-orange-100'
+                    }`}
+                  >
+                    <div className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getEventTypeColor(eventType)}`}>
+                          {eventType.charAt(0).toUpperCase() + eventType.slice(1)}
+                        </span>
+                        {event.eventDetails?.isFeatured && (
+                          <Star className="text-orange-500 fill-orange-500" size={20} />
+                        )}
                       </div>
-                      <div className="flex items-center gap-2 text-gray-600">
-                        <Clock size={16} className="text-orange-500" />
-                        <span className="text-sm">{event.time}</span>
-                      </div>
-                      <div className="flex items-start gap-2 text-gray-600">
-                        <MapPin size={16} className="text-orange-500 mt-0.5" />
-                        <div className="text-sm">
-                          <div className="font-medium">{event.location}</div>
-                          <div className="text-gray-500">{event.address}</div>
+                      
+                      <h3 className="text-xl font-bold text-gray-900 mb-3">{event.title}</h3>
+                      
+                      <div className="space-y-3 mb-4">
+                        <div className="flex items-center gap-2 text-gray-600">
+                          <Calendar size={16} className="text-orange-500" />
+                          <span className="text-sm">{event.eventDetails?.eventDate ? formatDate(event.eventDetails.eventDate) : 'TBA'}</span>
                         </div>
+                        {event.eventDetails?.eventTime && (
+                          <div className="flex items-center gap-2 text-gray-600">
+                            <Clock size={16} className="text-orange-500" />
+                            <span className="text-sm">{event.eventDetails.eventTime}</span>
+                          </div>
+                        )}
+                        {event.eventDetails?.locationName && (
+                          <div className="flex items-start gap-2 text-gray-600">
+                            <MapPin size={16} className="text-orange-500 mt-0.5" />
+                            <div className="text-sm">
+                              <div className="font-medium">{event.eventDetails.locationName}</div>
+                              {event.eventDetails.address && (
+                                <div className="text-gray-500">{event.eventDetails.address}</div>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
+                      
+                      <div 
+                        className="text-gray-600 prose prose-sm max-w-none"
+                        dangerouslySetInnerHTML={{ __html: event.excerpt || '' }}
+                      />
                     </div>
-                    
-                    <p className="text-gray-600 text-sm mb-4">{event.description}</p>
-                    
-                    {event.featured && (
-                      <Link
-                        href="/contact"
-                        className="inline-flex items-center text-orange-600 font-semibold hover:text-orange-700 transition-colors"
-                      >
-                        Book Similar Event
-                        <ArrowRight size={16} className="ml-1" />
-                      </Link>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                )
+              })}
             </div>
           </motion.section>
 
