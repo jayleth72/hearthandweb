@@ -20,7 +20,7 @@ function MembersContent() {
     loadChecklists();
 
     // Check if a shared checklist is in the URL
-    const sharedChecklist = searchParams.get('checklist');
+    const sharedChecklist = searchParams?.get('checklist') ?? null;
     if (sharedChecklist) {
       try {
         const decoded = JSON.parse(atob(decodeURIComponent(sharedChecklist)));
