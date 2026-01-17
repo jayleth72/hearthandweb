@@ -29,6 +29,9 @@ export async function GET(request: NextRequest) {
         eventTimeEnd: checklist.checklistDetails?.eventTimeEnd || '',
         eventAddress: checklist.checklistDetails?.eventAddress || '',
         eventMapsLink: checklist.checklistDetails?.eventMapsLink || '',
+        contactInfo: checklist.checklistDetails?.contactInfo || '',
+        eventTheme: checklist.checklistDetails?.eventTheme || '',
+        paymentStatus: checklist.checklistDetails?.paymentStatus || 'need_to_pay',
         items: (checklist.checklistDetails?.checklistItems || []).map((item, index) => ({
           id: `${checklist.databaseId}-${index}`,
           text: item.text,
@@ -78,6 +81,9 @@ export async function POST(request: NextRequest) {
         eventTimeEnd: checklistData.eventTimeEnd || '',
         eventAddress: checklistData.eventAddress || '',
         eventMapsLink: checklistData.eventMapsLink || '',
+        contactInfo: checklistData.contactInfo || '',
+        eventTheme: checklistData.eventTheme || '',
+        paymentStatus: checklistData.paymentStatus || 'need_to_pay',
         items: checklistData.items || []
       });
       
@@ -101,6 +107,9 @@ export async function POST(request: NextRequest) {
       eventTimeEnd: checklistData.eventTimeEnd || '',
       eventAddress: checklistData.eventAddress || '',
       eventMapsLink: checklistData.eventMapsLink || '',
+      contactInfo: checklistData.contactInfo || '',
+      eventTheme: checklistData.eventTheme || '',
+      paymentStatus: checklistData.paymentStatus || 'need_to_pay',
       items: checklistData.items || []
     });
     

@@ -541,6 +541,9 @@ const GET_ALL_CHECKLISTS = `
             eventTimeEnd
             eventAddress
             eventMapsLink
+            contactInfo
+            eventTheme
+            paymentStatus
             checklistItems {
               text
               completed
@@ -568,6 +571,9 @@ const GET_CHECKLIST_BY_ID = `
         eventTimeEnd
         eventAddress
         eventMapsLink
+        contactInfo
+        eventTheme
+        paymentStatus
         checklistItems {
           text
           completed
@@ -664,6 +670,9 @@ export async function createChecklist(input: CreateChecklistInput): Promise<numb
       event_time_end: input.eventTimeEnd || '',
       event_address: input.eventAddress || '',
       event_maps_link: input.eventMapsLink || '',
+      contact_info: input.contactInfo || '',
+      event_theme: input.eventTheme || '',
+      payment_status: input.paymentStatus || 'need_to_pay',
       checklist_items: input.items || []
     };
     
@@ -730,7 +739,7 @@ export async function updateChecklist(input: UpdateChecklistInput): Promise<bool
     }
     
     // Update ACF fields
-    await updateChecklistACF(input.id, input.eventDate, input.eventTimeStart, input.eventTimeEnd, input.eventAddress, input.eventMapsLink, input.items)
+    await updateChecklistACF(input.id, input.eventDate, input.eventTimeStart, input.eventTimeEnd, input.eventAddress, input.eventMapsLink, input.contactInfo, input.eventTheme, input.paymentStatus, input.items)
     
     return true
   } catch (error) {
@@ -780,7 +789,7 @@ export async function deleteChecklist(id: number): Promise<boolean> {
 }
 
 // Helper function to update ACF fields via custom REST API endpoint
-async function updateChecklistACF(id: number, eventDate?: string, eventTimeStart?: string, eventTimeEnd?: string, eventAddress?: string, eventMapsLink?: string, items?: ChecklistItem[]): Promise<void> {
+async function updateChecklistACF(id: number, eventDate?: string, eventTimeStart?: string, eventTimeEnd?: string, eventAddress?: string, eventMapsLink?: string, contactInfo?: string, eventTheme?: string, paymentStatus?: 'free' | 'need_to_pay', items?: ChecklistItem[]): Promise<void> {
   try {
     const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL || ''
     
@@ -796,6 +805,9 @@ async function updateChecklistACF(id: number, eventDate?: string, eventTimeStart
     console.log('Event time end:', eventTimeEnd);
     console.log('Event address:', eventAddress);
     console.log('Event maps link:', eventMapsLink);
+    console.log('Contact info:', contactInfo);
+    console.log('Event theme:', eventTheme);
+    console.log('Payment status:', paymentStatus);
     console.log('Items count:', items?.length || 0);
     
     const payload = {
@@ -804,6 +816,9 @@ async function updateChecklistACF(id: number, eventDate?: string, eventTimeStart
       event_time_end: eventTimeEnd || '',
       event_address: eventAddress || '',
       event_maps_link: eventMapsLink || '',
+      contact_info: contactInfo || '',
+      event_theme: eventTheme || '',
+      payment_status: paymentStatus || 'need_to_pay',
       checklist_items: items || []
     };
     

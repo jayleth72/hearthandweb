@@ -80,6 +80,9 @@ function MembersContent() {
       eventTimeEnd: '',
       eventAddress: '',
       eventMapsLink: '',
+      contactInfo: '',
+      eventTheme: '',
+      paymentStatus: 'need_to_pay',
       items: [],
       lastModified: new Date().toISOString()
     };

@@ -103,6 +103,37 @@ if (function_exists('acf_add_local_field_group')) {
                 'show_in_graphql' => 1,
             ),
             array(
+                'key' => 'field_contact_info',
+                'label' => 'Contact Information',
+                'name' => 'contact_info',
+                'type' => 'text',
+                'required' => 0,
+                'placeholder' => 'Contact name, phone, email',
+                'show_in_graphql' => 1,
+            ),
+            array(
+                'key' => 'field_event_theme',
+                'label' => 'Event Theme',
+                'name' => 'event_theme',
+                'type' => 'text',
+                'required' => 0,
+                'placeholder' => 'Princess, Superhero, Animals, etc.',
+                'show_in_graphql' => 1,
+            ),
+            array(
+                'key' => 'field_payment_status',
+                'label' => 'Payment Status',
+                'name' => 'payment_status',
+                'type' => 'select',
+                'required' => 0,
+                'choices' => array(
+                    'free' => 'Free Event',
+                    'need_to_pay' => 'Need to Pay',
+                ),
+                'default_value' => 'need_to_pay',
+                'show_in_graphql' => 1,
+            ),
+            array(
                 'key' => 'field_checklist_items',
                 'label' => 'Checklist Items',
                 'name' => 'checklist_items',
@@ -242,6 +273,9 @@ function hh_create_checklist($request) {
     $event_time_end = $request->get_param('event_time_end');
     $event_address = $request->get_param('event_address');
     $event_maps_link = $request->get_param('event_maps_link');
+    $contact_info = $request->get_param('contact_info');
+    $event_theme = $request->get_param('event_theme');
+    $payment_status = $request->get_param('payment_status');
     $checklist_items = $request->get_param('checklist_items');
     
     error_log('Title: ' . $title);
@@ -250,6 +284,9 @@ function hh_create_checklist($request) {
     error_log('Event time end: ' . $event_time_end);
     error_log('Event address: ' . $event_address);
     error_log('Event maps link: ' . $event_maps_link);
+    error_log('Contact info: ' . $contact_info);
+    error_log('Event theme: ' . $event_theme);
+    error_log('Payment status: ' . $payment_status);
     error_log('Checklist items: ' . print_r($checklist_items, true));
     
     // Create the checklist post
@@ -301,6 +338,21 @@ function hh_create_checklist($request) {
         error_log('Event maps link update result: ' . ($result ? 'success' : 'failed'));
     }
     
+    if ($contact_info !== null) {
+        $result = update_field('contact_info', $contact_info, $post_id);
+        error_log('Contact info update result: ' . ($result ? 'success' : 'failed'));
+    }
+    
+    if ($event_theme !== null) {
+        $result = update_field('event_theme', $event_theme, $post_id);
+        error_log('Event theme update result: ' . ($result ? 'success' : 'failed'));
+    }
+    
+    if ($payment_status !== null) {
+        $result = update_field('payment_status', $payment_status, $post_id);
+        error_log('Payment status update result: ' . ($result ? 'success' : 'failed'));
+    }
+    
     if ($checklist_items !== null) {
         $result = update_field('checklist_items', $checklist_items, $post_id);
         error_log('Checklist items update result: ' . ($result ? 'success' : 'failed'));
@@ -318,6 +370,9 @@ function hh_create_checklist($request) {
         'event_time_end' => get_field('event_time_end', $post_id),
         'event_address' => get_field('event_address', $post_id),
         'event_maps_link' => get_field('event_maps_link', $post_id),
+        'contact_info' => get_field('contact_info', $post_id),
+        'event_theme' => get_field('event_theme', $post_id),
+        'payment_status' => get_field('payment_status', $post_id),
         'items_count' => is_array($checklist_items) ? count($checklist_items) : 0
     );
 }
@@ -331,6 +386,9 @@ function hh_update_checklist_data($request) {
     $event_time_end = $request->get_param('event_time_end');
     $event_address = $request->get_param('event_address');
     $event_maps_link = $request->get_param('event_maps_link');
+    $contact_info = $request->get_param('contact_info');
+    $event_theme = $request->get_param('event_theme');
+    $payment_status = $request->get_param('payment_status');
     $checklist_items = $request->get_param('checklist_items');
     
     error_log('Post ID: ' . $post_id);
@@ -339,6 +397,9 @@ function hh_update_checklist_data($request) {
     error_log('Event time end: ' . $event_time_end);
     error_log('Event address: ' . $event_address);
     error_log('Event maps link: ' . $event_maps_link);
+    error_log('Contact info: ' . $contact_info);
+    error_log('Event theme: ' . $event_theme);
+    error_log('Payment status: ' . $payment_status);
     error_log('Checklist items: ' . print_r($checklist_items, true));
     
     // Verify post exists and is a checklist
@@ -380,6 +441,21 @@ function hh_update_checklist_data($request) {
         error_log('Event maps link update result: ' . ($result ? 'success' : 'failed'));
     }
     
+    if ($contact_info !== null) {
+        $result = update_field('contact_info', $contact_info, $post_id);
+        error_log('Contact info update result: ' . ($result ? 'success' : 'failed'));
+    }
+    
+    if ($event_theme !== null) {
+        $result = update_field('event_theme', $event_theme, $post_id);
+        error_log('Event theme update result: ' . ($result ? 'success' : 'failed'));
+    }
+    
+    if ($payment_status !== null) {
+        $result = update_field('payment_status', $payment_status, $post_id);
+        error_log('Payment status update result: ' . ($result ? 'success' : 'failed'));
+    }
+    
     if ($checklist_items !== null) {
         $result = update_field('checklist_items', $checklist_items, $post_id);
         error_log('Checklist items update result: ' . ($result ? 'success' : 'failed'));
@@ -397,6 +473,9 @@ function hh_update_checklist_data($request) {
         'event_time_end' => get_field('event_time_end', $post_id),
         'event_address' => get_field('event_address', $post_id),
         'event_maps_link' => get_field('event_maps_link', $post_id),
+        'contact_info' => get_field('contact_info', $post_id),
+        'event_theme' => get_field('event_theme', $post_id),
+        'payment_status' => get_field('payment_status', $post_id),
         'items_count' => is_array($checklist_items) ? count($checklist_items) : 0
     );
 }

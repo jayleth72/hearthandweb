@@ -18,6 +18,9 @@ export interface EventChecklist {
   eventTimeEnd: string;
   eventAddress: string;
   eventMapsLink: string;
+  contactInfo: string;
+  eventTheme: string;
+  paymentStatus: 'free' | 'need_to_pay';
   items: ChecklistItem[];
   lastModified: string;
 }
@@ -84,6 +87,9 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
     eventTimeEnd: '',
     eventAddress: '',
     eventMapsLink: '',
+    contactInfo: '',
+    eventTheme: '',
+    paymentStatus: 'need_to_pay',
     items: [],
     lastModified: new Date().toISOString()
   });
@@ -196,7 +202,7 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
     }, 2000); // Debounce for 2 seconds
 
     return () => clearTimeout(timeoutId);
-  }, [checklist.eventName, checklist.eventDate, checklist.eventTimeStart, checklist.eventTimeEnd, checklist.eventAddress, checklist.eventMapsLink, checklist.items, isInitialized]); // Only trigger on actual content changes
+  }, [checklist.eventName, checklist.eventDate, checklist.eventTimeStart, checklist.eventTimeEnd, checklist.eventAddress, checklist.eventMapsLink, checklist.contactInfo, checklist.eventTheme, checklist.paymentStatus, checklist.items, isInitialized]); // Only trigger on actual content changes
 
   const toggleItem = (itemId: string) => {
     setChecklist(prev => ({
@@ -319,6 +325,9 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
     ${checklist.eventTimeStart || checklist.eventTimeEnd ? `<p><strong>Event Time:</strong> ${checklist.eventTimeStart || 'TBD'} - ${checklist.eventTimeEnd || 'TBD'}</p>` : ''}
     ${checklist.eventAddress ? `<p><strong>Event Address:</strong> ${checklist.eventAddress.replace(/\n/g, '<br>')}</p>` : ''}
     ${checklist.eventMapsLink ? `<p><strong>Maps Link:</strong> <a href="${checklist.eventMapsLink}" target="_blank" style="color: #2563eb;">${checklist.eventMapsLink}</a></p>` : ''}
+    ${checklist.contactInfo ? `<p><strong>Contact:</strong> ${checklist.contactInfo}</p>` : ''}
+    ${checklist.eventTheme ? `<p><strong>Theme:</strong> ${checklist.eventTheme}</p>` : ''}
+    ${checklist.paymentStatus ? `<p><strong>Payment:</strong> ${checklist.paymentStatus === 'free' ? 'Free Event' : 'Need to Pay'}</p>` : ''}
     <p class="progress">Progress: ${completedCount} / ${checklist.items.length} items completed (${Math.round((completedCount / checklist.items.length) * 100)}%)</p>
   </div>
 `;
@@ -492,18 +501,61 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
                   href={checklist.eventMapsLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 whitespace-nowrap"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
                   </svg>
                   Navigate
                 </a>
               )}
             </div>
           </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Contact Information
+            </label>
+            <input
+              type="text"
+              value={checklist.contactInfo}
+              onChange={(e) => setChecklist(prev => ({ ...prev, contactInfo: e.target.value, lastModified: new Date().toISOString() }))}
+              placeholder="Contact name, phone, email..."
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Event Theme
+              </label>
+              <input
+                type="text"
+                value={checklist.eventTheme}
+                onChange={(e) => setChecklist(prev => ({ ...prev, eventTheme: e.target.value, lastModified: new Date().toISOString() }))}
+                placeholder="Princess, Superhero, Animals..."
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Payment Status
+              </label>
+              <select
+                value={checklist.paymentStatus}
+                onChange={(e) => setChecklist(prev => ({ ...prev, paymentStatus: e.target.value as 'free' | 'need_to_pay', lastModified: new Date().toISOString() }))}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
+              >
+                <option value="need_to_pay">Need to Pay</option>
+                <option value="free">Free Event</option>
+              </select>
+            </div>
+          </div>
         </div>
+
 
         {/* Save Button and Status */}
         <div className="mt-4 flex items-center justify-between">

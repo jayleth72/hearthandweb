@@ -153,6 +153,9 @@ export interface ChecklistACF {
   eventTimeEnd?: string
   eventAddress?: string
   eventMapsLink?: string
+  contactInfo?: string
+  eventTheme?: string
+  paymentStatus?: 'free' | 'need_to_pay'
   checklistItems?: ChecklistItem[]
   lastModified?: string
 }
@@ -193,6 +196,9 @@ export interface CreateChecklistInput {
   eventTimeEnd?: string
   eventAddress?: string
   eventMapsLink?: string
+  contactInfo?: string
+  eventTheme?: string
+  paymentStatus?: 'free' | 'need_to_pay'
   items?: ChecklistItem[]
 }
 
@@ -204,5 +210,10 @@ export interface UpdateChecklistInput {
   eventTimeEnd?: string
   eventAddress?: string
   eventMapsLink?: string
+  contactInfo?: string
+  eventTheme?: string
+  paymentStatus?: 'free' | 'need_to_pay'
+  items?: ChecklistItem[]
+}
   items?: ChecklistItem[]
 }
