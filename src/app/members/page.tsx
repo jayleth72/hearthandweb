@@ -76,6 +76,10 @@ function MembersContent() {
       id: 'new',
       eventName,
       eventDate: '',
+      eventTimeStart: '',
+      eventTimeEnd: '',
+      eventAddress: '',
+      eventMapsLink: '',
       items: [],
       lastModified: new Date().toISOString()
     };
