@@ -537,6 +537,10 @@ const GET_ALL_CHECKLISTS = `
           modified
           checklistDetails {
             eventDate
+            eventTimeStart
+            eventTimeEnd
+            eventAddress
+            eventMapsLink
             checklistItems {
               text
               completed
@@ -560,6 +564,10 @@ const GET_CHECKLIST_BY_ID = `
       modified
       checklistDetails {
         eventDate
+        eventTimeStart
+        eventTimeEnd
+        eventAddress
+        eventMapsLink
         checklistItems {
           text
           completed
@@ -652,6 +660,10 @@ export async function createChecklist(input: CreateChecklistInput): Promise<numb
     const payload = {
       title: input.title,
       event_date: input.eventDate || '',
+      event_time_start: input.eventTimeStart || '',
+      event_time_end: input.eventTimeEnd || '',
+      event_address: input.eventAddress || '',
+      event_maps_link: input.eventMapsLink || '',
       checklist_items: input.items || []
     };
     
@@ -718,7 +730,7 @@ export async function updateChecklist(input: UpdateChecklistInput): Promise<bool
     }
     
     // Update ACF fields
-    await updateChecklistACF(input.id, input.eventDate, input.items)
+    await updateChecklistACF(input.id, input.eventDate, input.eventTimeStart, input.eventTimeEnd, input.eventAddress, input.eventMapsLink, input.items)
     
     return true
   } catch (error) {
@@ -768,7 +780,7 @@ export async function deleteChecklist(id: number): Promise<boolean> {
 }
 
 // Helper function to update ACF fields via custom REST API endpoint
-async function updateChecklistACF(id: number, eventDate?: string, items?: ChecklistItem[]): Promise<void> {
+async function updateChecklistACF(id: number, eventDate?: string, eventTimeStart?: string, eventTimeEnd?: string, eventAddress?: string, eventMapsLink?: string, items?: ChecklistItem[]): Promise<void> {
   try {
     const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL || ''
     
@@ -780,10 +792,18 @@ async function updateChecklistACF(id: number, eventDate?: string, items?: Checkl
     console.log('Updating ACF fields for checklist:', id);
     console.log('WordPress URL:', url);
     console.log('Event date:', eventDate);
+    console.log('Event time start:', eventTimeStart);
+    console.log('Event time end:', eventTimeEnd);
+    console.log('Event address:', eventAddress);
+    console.log('Event maps link:', eventMapsLink);
     console.log('Items count:', items?.length || 0);
     
     const payload = {
       event_date: eventDate || '',
+      event_time_start: eventTimeStart || '',
+      event_time_end: eventTimeEnd || '',
+      event_address: eventAddress || '',
+      event_maps_link: eventMapsLink || '',
       checklist_items: items || []
     };
     

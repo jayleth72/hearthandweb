@@ -69,6 +69,40 @@ if (function_exists('acf_add_local_field_group')) {
                 'show_in_graphql' => 1,
             ),
             array(
+                'key' => 'field_event_time_start',
+                'label' => 'Event Start Time',
+                'name' => 'event_time_start',
+                'type' => 'text',
+                'required' => 0,
+                'show_in_graphql' => 1,
+            ),
+            array(
+                'key' => 'field_event_time_end',
+                'label' => 'Event End Time',
+                'name' => 'event_time_end',
+                'type' => 'text',
+                'required' => 0,
+                'show_in_graphql' => 1,
+            ),
+            array(
+                'key' => 'field_event_address',
+                'label' => 'Event Address',
+                'name' => 'event_address',
+                'type' => 'textarea',
+                'required' => 0,
+                'rows' => 3,
+                'show_in_graphql' => 1,
+            ),
+            array(
+                'key' => 'field_event_maps_link',
+                'label' => 'Maps Link',
+                'name' => 'event_maps_link',
+                'type' => 'url',
+                'required' => 0,
+                'placeholder' => 'https://maps.google.com/...',
+                'show_in_graphql' => 1,
+            ),
+            array(
                 'key' => 'field_checklist_items',
                 'label' => 'Checklist Items',
                 'name' => 'checklist_items',
@@ -204,10 +238,18 @@ function hh_create_checklist($request) {
     
     $title = $request->get_param('title');
     $event_date = $request->get_param('event_date');
+    $event_time_start = $request->get_param('event_time_start');
+    $event_time_end = $request->get_param('event_time_end');
+    $event_address = $request->get_param('event_address');
+    $event_maps_link = $request->get_param('event_maps_link');
     $checklist_items = $request->get_param('checklist_items');
     
     error_log('Title: ' . $title);
     error_log('Event date: ' . $event_date);
+    error_log('Event time start: ' . $event_time_start);
+    error_log('Event time end: ' . $event_time_end);
+    error_log('Event address: ' . $event_address);
+    error_log('Event maps link: ' . $event_maps_link);
     error_log('Checklist items: ' . print_r($checklist_items, true));
     
     // Create the checklist post
@@ -239,6 +281,26 @@ function hh_create_checklist($request) {
         error_log('Event date update result: ' . ($result ? 'success' : 'failed'));
     }
     
+    if ($event_time_start !== null) {
+        $result = update_field('event_time_start', $event_time_start, $post_id);
+        error_log('Event time start update result: ' . ($result ? 'success' : 'failed'));
+    }
+    
+    if ($event_time_end !== null) {
+        $result = update_field('event_time_end', $event_time_end, $post_id);
+        error_log('Event time end update result: ' . ($result ? 'success' : 'failed'));
+    }
+    
+    if ($event_address !== null) {
+        $result = update_field('event_address', $event_address, $post_id);
+        error_log('Event address update result: ' . ($result ? 'success' : 'failed'));
+    }
+    
+    if ($event_maps_link !== null) {
+        $result = update_field('event_maps_link', $event_maps_link, $post_id);
+        error_log('Event maps link update result: ' . ($result ? 'success' : 'failed'));
+    }
+    
     if ($checklist_items !== null) {
         $result = update_field('checklist_items', $checklist_items, $post_id);
         error_log('Checklist items update result: ' . ($result ? 'success' : 'failed'));
@@ -252,6 +314,10 @@ function hh_create_checklist($request) {
         'post_id' => $post_id,
         'message' => 'Checklist created successfully',
         'event_date' => get_field('event_date', $post_id),
+        'event_time_start' => get_field('event_time_start', $post_id),
+        'event_time_end' => get_field('event_time_end', $post_id),
+        'event_address' => get_field('event_address', $post_id),
+        'event_maps_link' => get_field('event_maps_link', $post_id),
         'items_count' => is_array($checklist_items) ? count($checklist_items) : 0
     );
 }
@@ -261,10 +327,18 @@ function hh_update_checklist_data($request) {
     
     $post_id = $request->get_param('id');
     $event_date = $request->get_param('event_date');
+    $event_time_start = $request->get_param('event_time_start');
+    $event_time_end = $request->get_param('event_time_end');
+    $event_address = $request->get_param('event_address');
+    $event_maps_link = $request->get_param('event_maps_link');
     $checklist_items = $request->get_param('checklist_items');
     
     error_log('Post ID: ' . $post_id);
     error_log('Event date: ' . $event_date);
+    error_log('Event time start: ' . $event_time_start);
+    error_log('Event time end: ' . $event_time_end);
+    error_log('Event address: ' . $event_address);
+    error_log('Event maps link: ' . $event_maps_link);
     error_log('Checklist items: ' . print_r($checklist_items, true));
     
     // Verify post exists and is a checklist
@@ -286,6 +360,26 @@ function hh_update_checklist_data($request) {
         error_log('Event date update result: ' . ($result ? 'success' : 'failed'));
     }
     
+    if ($event_time_start !== null) {
+        $result = update_field('event_time_start', $event_time_start, $post_id);
+        error_log('Event time start update result: ' . ($result ? 'success' : 'failed'));
+    }
+    
+    if ($event_time_end !== null) {
+        $result = update_field('event_time_end', $event_time_end, $post_id);
+        error_log('Event time end update result: ' . ($result ? 'success' : 'failed'));
+    }
+    
+    if ($event_address !== null) {
+        $result = update_field('event_address', $event_address, $post_id);
+        error_log('Event address update result: ' . ($result ? 'success' : 'failed'));
+    }
+    
+    if ($event_maps_link !== null) {
+        $result = update_field('event_maps_link', $event_maps_link, $post_id);
+        error_log('Event maps link update result: ' . ($result ? 'success' : 'failed'));
+    }
+    
     if ($checklist_items !== null) {
         $result = update_field('checklist_items', $checklist_items, $post_id);
         error_log('Checklist items update result: ' . ($result ? 'success' : 'failed'));
@@ -299,6 +393,10 @@ function hh_update_checklist_data($request) {
         'post_id' => $post_id,
         'message' => 'Checklist updated successfully',
         'event_date' => get_field('event_date', $post_id),
+        'event_time_start' => get_field('event_time_start', $post_id),
+        'event_time_end' => get_field('event_time_end', $post_id),
+        'event_address' => get_field('event_address', $post_id),
+        'event_maps_link' => get_field('event_maps_link', $post_id),
         'items_count' => is_array($checklist_items) ? count($checklist_items) : 0
     );
 }

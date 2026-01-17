@@ -14,6 +14,10 @@ export interface EventChecklist {
   id: string;
   eventName: string;
   eventDate: string;
+  eventTimeStart: string;
+  eventTimeEnd: string;
+  eventAddress: string;
+  eventMapsLink: string;
   items: ChecklistItem[];
   lastModified: string;
 }
@@ -76,6 +80,10 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
     id: eventId || crypto.randomUUID(),
     eventName: eventName || '',
     eventDate: '',
+    eventTimeStart: '',
+    eventTimeEnd: '',
+    eventAddress: '',
+    eventMapsLink: '',
     items: [],
     lastModified: new Date().toISOString()
   });
@@ -85,6 +93,23 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
+
+  // Generate time options in 30-minute increments
+  const generateTimeOptions = () => {
+    const times = [];
+    for (let hour = 0; hour < 24; hour++) {
+      for (let minute = 0; minute < 60; minute += 30) {
+        const time24 = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        const hour12 = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+        const ampm = hour < 12 ? 'AM' : 'PM';
+        const time12 = `${hour12}:${minute.toString().padStart(2, '0')} ${ampm}`;
+        times.push({ value: time24, label: time12 });
+      }
+    }
+    return times;
+  };
+
+  const timeOptions = generateTimeOptions();
 
   // Load checklist from server or initialize with default items
   useEffect(() => {
@@ -171,7 +196,7 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
     }, 2000); // Debounce for 2 seconds
 
     return () => clearTimeout(timeoutId);
-  }, [checklist.eventName, checklist.eventDate, checklist.items, isInitialized]); // Only trigger on actual content changes
+  }, [checklist.eventName, checklist.eventDate, checklist.eventTimeStart, checklist.eventTimeEnd, checklist.eventAddress, checklist.eventMapsLink, checklist.items, isInitialized]); // Only trigger on actual content changes
 
   const toggleItem = (itemId: string) => {
     setChecklist(prev => ({
@@ -291,6 +316,9 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
   
   <div class="event-info">
     ${checklist.eventDate ? `<p><strong>Event Date:</strong> ${new Date(checklist.eventDate).toLocaleDateString()}</p>` : ''}
+    ${checklist.eventTimeStart || checklist.eventTimeEnd ? `<p><strong>Event Time:</strong> ${checklist.eventTimeStart || 'TBD'} - ${checklist.eventTimeEnd || 'TBD'}</p>` : ''}
+    ${checklist.eventAddress ? `<p><strong>Event Address:</strong> ${checklist.eventAddress.replace(/\n/g, '<br>')}</p>` : ''}
+    ${checklist.eventMapsLink ? `<p><strong>Maps Link:</strong> <a href="${checklist.eventMapsLink}" target="_blank" style="color: #2563eb;">${checklist.eventMapsLink}</a></p>` : ''}
     <p class="progress">Progress: ${completedCount} / ${checklist.items.length} items completed (${Math.round((completedCount / checklist.items.length) * 100)}%)</p>
   </div>
 `;
@@ -384,7 +412,7 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
               value={checklist.eventName}
               onChange={(e) => setChecklist(prev => ({ ...prev, eventName: e.target.value, lastModified: new Date().toISOString() }))}
               placeholder="Enter event name..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
             />
           </div>
           
@@ -396,9 +424,137 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
               type="date"
               value={checklist.eventDate}
               onChange={(e) => setChecklist(prev => ({ ...prev, eventDate: e.target.value, lastModified: new Date().toISOString() }))}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
             />
           </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Start Time
+              </label>
+              <select
+                value={checklist.eventTimeStart}
+                onChange={(e) => setChecklist(prev => ({ ...prev, eventTimeStart: e.target.value, lastModified: new Date().toISOString() }))}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
+              >
+                <option value="">Select start time...</option>
+                {timeOptions.map(time => (
+                  <option key={time.value} value={time.value}>{time.label}</option>
+                ))}
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                End Time
+              </label>
+              <select
+                value={checklist.eventTimeEnd}
+                onChange={(e) => setChecklist(prev => ({ ...prev, eventTimeEnd: e.target.value, lastModified: new Date().toISOString() }))}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
+              >
+                <option value="">Select end time...</option>
+                {timeOptions.map(time => (
+                  <option key={time.value} value={time.value}>{time.label}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Event Address
+            </label>
+            <textarea
+              value={checklist.eventAddress}
+              onChange={(e) => setChecklist(prev => ({ ...prev, eventAddress: e.target.value, lastModified: new Date().toISOString() }))}
+              placeholder="Enter event location address..."
+              rows={3}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900 resize-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Maps Link (Optional)
+            </label>
+            <div className="flex gap-2">
+              <input
+                type="url"
+                value={checklist.eventMapsLink}
+                onChange={(e) => setChecklist(prev => ({ ...prev, eventMapsLink: e.target.value, lastModified: new Date().toISOString() }))}
+                placeholder="Paste Google Maps or other maps link..."
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
+              />
+              {checklist.eventMapsLink && (
+                <a
+                  href={checklist.eventMapsLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 whitespace-nowrap"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Navigate
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Save Button and Status */}
+        <div className="mt-4 flex items-center justify-between">
+          <button
+            onClick={async () => {
+              if (checklist.eventName && checklist.eventName.trim() !== '' && checklist.items.length > 0) {
+                setIsSaving(true);
+                try {
+                  const response = await fetch('/api/checklists', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(checklist)
+                  });
+                  
+                  if (response.ok) {
+                    const data = await response.json();
+                    setLastSaved(new Date());
+                    if (data.checklist.id !== checklist.id) {
+                      setChecklist(prev => ({ ...prev, id: data.checklist.id }));
+                    }
+                  } else {
+                    throw new Error('Failed to save');
+                  }
+                } catch (error) {
+                  console.error('Error saving checklist:', error);
+                  alert('Failed to save checklist');
+                } finally {
+                  setIsSaving(false);
+                }
+              } else {
+                alert('Please enter an event name and add at least one checklist item');
+              }
+            }}
+            disabled={isSaving}
+            className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-lg hover:from-pink-700 hover:to-purple-700 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSaving ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>Save Checklist</>
+            )}
+          </button>
+          
+          {lastSaved && !isSaving && (
+            <span className="text-sm text-green-600">
+              ✓ Saved {lastSaved.toLocaleTimeString()}
+            </span>
+          )}
         </div>
 
         {/* Progress Bar */}
@@ -498,12 +654,12 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
             onChange={(e) => setNewItemText(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && addItem()}
             placeholder="Enter new checklist item..."
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
           />
           <select
             value={newItemCategory}
             onChange={(e) => setNewItemCategory(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
           >
             <option value="Custom">Custom</option>
             {categories.map(cat => (

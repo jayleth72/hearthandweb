@@ -149,6 +149,10 @@ export interface ChecklistItem {
 
 export interface ChecklistACF {
   eventDate?: string
+  eventTimeStart?: string
+  eventTimeEnd?: string
+  eventAddress?: string
+  eventMapsLink?: string
   checklistItems?: ChecklistItem[]
   lastModified?: string
 }
@@ -185,6 +189,10 @@ export interface WordPressChecklistResponse {
 export interface CreateChecklistInput {
   title: string
   eventDate?: string
+  eventTimeStart?: string
+  eventTimeEnd?: string
+  eventAddress?: string
+  eventMapsLink?: string
   items?: ChecklistItem[]
 }
 
@@ -192,5 +200,9 @@ export interface UpdateChecklistInput {
   id: number
   title?: string
   eventDate?: string
+  eventTimeStart?: string
+  eventTimeEnd?: string
+  eventAddress?: string
+  eventMapsLink?: string
   items?: ChecklistItem[]
 }

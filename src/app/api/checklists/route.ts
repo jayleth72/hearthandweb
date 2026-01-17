@@ -25,6 +25,10 @@ export async function GET(request: NextRequest) {
         id: checklist.databaseId.toString(),
         eventName: checklist.title,
         eventDate: eventDate,
+        eventTimeStart: checklist.checklistDetails?.eventTimeStart || '',
+        eventTimeEnd: checklist.checklistDetails?.eventTimeEnd || '',
+        eventAddress: checklist.checklistDetails?.eventAddress || '',
+        eventMapsLink: checklist.checklistDetails?.eventMapsLink || '',
         items: (checklist.checklistDetails?.checklistItems || []).map((item, index) => ({
           id: `${checklist.databaseId}-${index}`,
           text: item.text,
@@ -70,6 +74,10 @@ export async function POST(request: NextRequest) {
         id: parseInt(checklistData.id),
         title: checklistData.eventName,
         eventDate: checklistData.eventDate || '',
+        eventTimeStart: checklistData.eventTimeStart || '',
+        eventTimeEnd: checklistData.eventTimeEnd || '',
+        eventAddress: checklistData.eventAddress || '',
+        eventMapsLink: checklistData.eventMapsLink || '',
         items: checklistData.items || []
       });
       
@@ -89,6 +97,10 @@ export async function POST(request: NextRequest) {
     const newId = await createChecklist({
       title: checklistData.eventName || 'New Checklist',
       eventDate: checklistData.eventDate || '',
+      eventTimeStart: checklistData.eventTimeStart || '',
+      eventTimeEnd: checklistData.eventTimeEnd || '',
+      eventAddress: checklistData.eventAddress || '',
+      eventMapsLink: checklistData.eventMapsLink || '',
       items: checklistData.items || []
     });
     
