@@ -215,5 +215,3 @@ export interface UpdateChecklistInput {
   paymentStatus?: 'free' | 'need_to_pay'
   items?: ChecklistItem[]
 }
-  items?: ChecklistItem[]
-}
