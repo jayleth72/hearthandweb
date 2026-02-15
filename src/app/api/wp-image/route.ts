@@ -9,8 +9,15 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Image URL is required' }, { status: 400 })
     }
 
-    // Only allow images from your WordPress domain
-    if (!imageUrl.includes('handheartecobodyart.local')) {
+    // Only allow images from your WordPress domains
+    const allowedDomains = [
+      'handheartecobodyart.local',
+      'cmshandheart.flywheelsites.com'
+    ]
+    
+    const isAllowed = allowedDomains.some(domain => imageUrl.includes(domain))
+    
+    if (!isAllowed) {
       return NextResponse.json({ error: 'Invalid image domain' }, { status: 403 })
     }
 
