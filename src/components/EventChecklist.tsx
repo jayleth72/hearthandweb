@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Check, X, Plus, Trash2, Printer, Share2 } from 'lucide-react';
+import { useAuth } from '@/components/WordPressAuthProvider';
 
 export interface ChecklistItem {
   id: string;
@@ -79,6 +80,7 @@ const DEFAULT_CHECKLIST_ITEMS: ChecklistItem[] = [
 ];
 
 export default function EventChecklist({ eventId, eventName, onSave }: EventChecklistProps) {
+  const { isAdmin } = useAuth();
   const [checklist, setChecklist] = useState<EventChecklist>({
     id: eventId || crypto.randomUUID(),
     eventName: eventName || '',
@@ -401,6 +403,35 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
     }
   };
 
+  const deleteChecklist = async () => {
+    if (!isAdmin) {
+      alert('Only administrators can delete checklists');
+      return;
+    }
+
+    if (!confirm(`Are you sure you want to permanently delete "${checklist.eventName}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/checklists?id=${checklist.id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete checklist');
+      }
+
+      alert('Checklist deleted successfully');
+      // Redirect back to events page
+      window.location.href = '/events';
+    } catch (error) {
+      console.error('Error deleting checklist:', error);
+      alert(error instanceof Error ? error.message : 'Failed to delete checklist');
+    }
+  };
+
   const categories = Array.from(new Set(checklist.items.map(item => item.category || 'Uncategorized')));
   const completedCount = checklist.items.filter(item => item.completed).length;
   const progress = (completedCount / checklist.items.length) * 100;
@@ -646,6 +677,15 @@ export default function EventChecklist({ eventId, eventName, onSave }: EventChec
             <X size={16} />
             Reset All
           </button>
+          {isAdmin && checklist.id && checklist.id !== 'new' && (
+            <button
+              onClick={deleteChecklist}
+              className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm ml-auto"
+            >
+              <Trash2 size={16} />
+              Delete Checklist
+            </button>
+          )}
         </div>
       </div>
 

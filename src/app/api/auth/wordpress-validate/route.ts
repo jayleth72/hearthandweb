@@ -5,6 +5,8 @@ const WORDPRESS_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://your-wor
 export async function GET(request: NextRequest) {
   const token = request.cookies.get('wp_auth_token')?.value;
 
+  console.log('Validation - Token exists:', !!token);
+
   if (!token) {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
   }
@@ -19,6 +21,8 @@ export async function GET(request: NextRequest) {
       },
     });
 
+    console.log('Validation - Token validate response status:', response.status);
+
     if (!response.ok) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
@@ -32,8 +36,15 @@ export async function GET(request: NextRequest) {
       },
     });
 
+    console.log('Validation - User response status:', userResponse.status);
+
     if (userResponse.ok) {
       const userData = await userResponse.json();
+      console.log('Validation - User data:', {
+        id: userData.id,
+        name: userData.name,
+        roles: userData.roles
+      });
       return NextResponse.json({ 
         valid: true, 
         user: {
@@ -41,6 +52,8 @@ export async function GET(request: NextRequest) {
           email: userData.email || '',
           displayName: userData.name,
           nicename: userData.slug,
+          roles: userData.roles || [],
+          capabilities: userData.capabilities || {}
         }
       });
     }

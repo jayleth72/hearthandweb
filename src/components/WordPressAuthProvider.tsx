@@ -7,6 +7,8 @@ interface User {
   email: string;
   displayName: string;
   nicename: string;
+  roles?: string[];
+  capabilities?: Record<string, boolean>;
 }
 
 interface AuthContextType {
@@ -15,6 +17,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   isLoading: boolean;
   isAuthenticated: boolean;
+  isAdmin: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -32,10 +35,13 @@ export function WordPressAuthProvider({ children }: { children: ReactNode }) {
       const response = await fetch('/api/auth/wordpress-validate');
       if (response.ok) {
         const data = await response.json();
+        console.log('Auth validation response:', data);
         if (data.user) {
+          console.log('Setting user with roles:', data.user.roles);
           setUser(data.user);
         }
       } else {
+        console.log('Auth validation failed:', response.status);
         setUser(null);
       }
     } catch (error) {
@@ -59,6 +65,8 @@ export function WordPressAuthProvider({ children }: { children: ReactNode }) {
     }
 
     const data = await response.json();
+    console.log('Login successful, user data:', data.user);
+    console.log('User roles:', data.user.roles);
     setUser(data.user);
   };
 
@@ -80,7 +88,12 @@ export function WordPressAuthProvider({ children }: { children: ReactNode }) {
         login, 
         logout, 
         isLoading, 
-        isAuthenticated: !!user 
+        isAuthenticated: !!user,
+        isAdmin: (() => {
+          const isAdmin = !!user?.roles?.includes('administrator');
+          console.log('isAdmin computed:', isAdmin, 'user roles:', user?.roles);
+          return isAdmin;
+        })()
       }}
     >
       {children}

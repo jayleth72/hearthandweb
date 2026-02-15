@@ -81,6 +81,21 @@ export default function DashboardPage() {
           </Link>
 
           <Link 
+            href="/events/manage"
+            className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-all transform hover:-translate-y-1 border-2 border-orange-500"
+          >
+            <div className="flex items-center mb-4">
+              <div className="bg-orange-100 p-3 rounded-lg">
+                <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </div>
+              <h3 className="ml-4 text-lg font-semibold text-gray-900">Manage Events</h3>
+            </div>
+            <p className="text-gray-600 text-sm">Add, edit, and organize your events</p>
+          </Link>
+
+          <Link 
             href="/gallery"
             className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-all transform hover:-translate-y-1"
           >

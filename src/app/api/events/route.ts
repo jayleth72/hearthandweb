@@ -2,12 +2,14 @@ import { NextResponse } from 'next/server'
 import { getAllEvents, getUpcomingEvents, getPastEvents } from '@/lib/wordpress'
 
 export const dynamic = 'force-dynamic'
-export const revalidate = 300 // Revalidate every 5 minutes
+export const revalidate = 0 // Disable caching - always fetch fresh data
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
     const filter = searchParams.get('filter') // 'all', 'upcoming', 'past'
+
+    console.log('Events API - Fetching events with filter:', filter)
 
     let events
     
@@ -22,10 +24,16 @@ export async function GET(request: Request) {
         events = await getAllEvents()
     }
 
+    console.log('Events API - Returning', events.length, 'events')
+
     return NextResponse.json({ 
       success: true,
       events,
       count: events.length
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+      }
     })
   } catch (error) {
     console.error('Error fetching events:', error)

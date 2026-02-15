@@ -22,6 +22,8 @@ const client = new GraphQLClient(endpoint, {
   headers: {
     'Content-Type': 'application/json',
   },
+  cache: 'no-store',
+  next: { revalidate: 0 }
 })
 
 // GraphQL Queries
@@ -251,62 +253,60 @@ const GET_ALL_EVENTS = `
           eventDetails {
             eventDate
             eventTime
-            eventEndDate
+            endDate
             locationName
             address
             eventType
             isFeatured
-            eventStatus
-            attendeeCount
             maxAttendees
             registrationLink
             price
             eventImage1 {
-              sourceUrl
-              altText
-              mediaDetails {
-                width
-                height
+              node {
+                id
+                sourceUrl
+                altText
+                databaseId
               }
             }
             eventImage2 {
-              sourceUrl
-              altText
-              mediaDetails {
-                width
-                height
+              node {
+                id
+                sourceUrl
+                altText
+                databaseId
               }
             }
             eventImage3 {
-              sourceUrl
-              altText
-              mediaDetails {
-                width
-                height
+              node {
+                id
+                sourceUrl
+                altText
+                databaseId
               }
             }
             eventImage4 {
-              sourceUrl
-              altText
-              mediaDetails {
-                width
-                height
+              node {
+                id
+                sourceUrl
+                altText
+                databaseId
               }
             }
             eventImage5 {
-              sourceUrl
-              altText
-              mediaDetails {
-                width
-                height
+              node {
+                id
+                sourceUrl
+                altText
+                databaseId
               }
             }
             eventImage6 {
-              sourceUrl
-              altText
-              mediaDetails {
-                width
-                height
+              node {
+                id
+                sourceUrl
+                altText
+                databaseId
               }
             }
           }
@@ -345,62 +345,60 @@ const GET_EVENT_BY_SLUG = `
       eventDetails {
         eventDate
         eventTime
-        eventEndDate
+        endDate
         locationName
         address
         eventType
         isFeatured
-        eventStatus
-        attendeeCount
         maxAttendees
         registrationLink
         price
         eventImage1 {
-          sourceUrl
-          altText
-          mediaDetails {
-            width
-            height
+          node {
+            id
+            sourceUrl
+            altText
+            databaseId
           }
         }
         eventImage2 {
-          sourceUrl
-          altText
-          mediaDetails {
-            width
-            height
+          node {
+            id
+            sourceUrl
+            altText
+            databaseId
           }
         }
         eventImage3 {
-          sourceUrl
-          altText
-          mediaDetails {
-            width
-            height
+          node {
+            id
+            sourceUrl
+            altText
+            databaseId
           }
         }
         eventImage4 {
-          sourceUrl
-          altText
-          mediaDetails {
-            width
-            height
+          node {
+            id
+            sourceUrl
+            altText
+            databaseId
           }
         }
         eventImage5 {
-          sourceUrl
-          altText
-          mediaDetails {
-            width
-            height
+          node {
+            id
+            sourceUrl
+            altText
+            databaseId
           }
         }
         eventImage6 {
-          sourceUrl
-          altText
-          mediaDetails {
-            width
-            height
+          node {
+            id
+            sourceUrl
+            altText
+            databaseId
           }
         }
       }
@@ -423,10 +421,10 @@ export async function getUpcomingEvents(): Promise<WordPressEvent[]> {
   try {
     const allEvents = await getAllEvents()
     const now = new Date()
+    now.setHours(0, 0, 0, 0) // Start of today
     return allEvents.filter(event => {
-      if (event.eventDetails?.eventStatus === 'past') return false
       const eventDate = new Date(event.eventDetails?.eventDate || event.date)
-      return eventDate >= now && event.eventDetails?.eventStatus !== 'cancelled'
+      return eventDate >= now
     }).sort((a, b) => {
       const dateA = new Date(a.eventDetails?.eventDate || a.date)
       const dateB = new Date(b.eventDetails?.eventDate || b.date)
@@ -442,7 +440,9 @@ export async function getPastEvents(): Promise<WordPressEvent[]> {
   try {
     const allEvents = await getAllEvents()
     const now = new Date()
+    now.setHours(0, 0, 0, 0) // Start of today
     return allEvents.filter(event => {
+      // Check eventStatus if available, otherwise use date
       if (event.eventDetails?.eventStatus === 'past') return true
       const eventDate = new Date(event.eventDetails?.eventDate || event.date)
       return eventDate < now
@@ -461,24 +461,36 @@ export async function getPastEvents(): Promise<WordPressEvent[]> {
 export function getEventImages(event: WordPressEvent): Array<{ sourceUrl: string; altText: string }> {
   const images: Array<{ sourceUrl: string; altText: string }> = []
   
-  if (event.eventDetails?.eventImage1) {
-    images.push(event.eventDetails.eventImage1)
+  // Helper to extract image from potentially nested structure
+  const extractImage = (imageField: any) => {
+    if (!imageField) return null
+    const imageNode = imageField.node || imageField
+    if (imageNode && imageNode.sourceUrl) {
+      return {
+        sourceUrl: imageNode.sourceUrl,
+        altText: imageNode.altText || ''
+      }
+    }
+    return null
   }
-  if (event.eventDetails?.eventImage2) {
-    images.push(event.eventDetails.eventImage2)
-  }
-  if (event.eventDetails?.eventImage3) {
-    images.push(event.eventDetails.eventImage3)
-  }
-  if (event.eventDetails?.eventImage4) {
-    images.push(event.eventDetails.eventImage4)
-  }
-  if (event.eventDetails?.eventImage5) {
-    images.push(event.eventDetails.eventImage5)
-  }
-  if (event.eventDetails?.eventImage6) {
-    images.push(event.eventDetails.eventImage6)
-  }
+  
+  const image1 = extractImage(event.eventDetails?.eventImage1)
+  if (image1) images.push(image1)
+  
+  const image2 = extractImage(event.eventDetails?.eventImage2)
+  if (image2) images.push(image2)
+  
+  const image3 = extractImage(event.eventDetails?.eventImage3)
+  if (image3) images.push(image3)
+  
+  const image4 = extractImage(event.eventDetails?.eventImage4)
+  if (image4) images.push(image4)
+  
+  const image5 = extractImage(event.eventDetails?.eventImage5)
+  if (image5) images.push(image5)
+  
+  const image6 = extractImage(event.eventDetails?.eventImage6)
+  if (image6) images.push(image6)
   
   return images
 }
@@ -619,6 +631,51 @@ const UPDATE_CHECKLIST = `
 const DELETE_CHECKLIST = `
   mutation DeleteChecklist($id: ID!) {
     deleteChecklist(input: {
+      id: $id
+    }) {
+      deletedId
+    }
+  }
+`
+
+const CREATE_EVENT = `
+  mutation CreateEvent($title: String!, $content: String, $excerpt: String) {
+    createEvent(input: {
+      title: $title
+      content: $content
+      excerpt: $excerpt
+      status: PUBLISH
+    }) {
+      event {
+        id
+        databaseId
+        title
+      }
+    }
+  }
+`
+
+const UPDATE_EVENT = `
+  mutation UpdateEvent($id: ID!, $title: String, $content: String, $excerpt: String) {
+    updateEvent(input: {
+      id: $id
+      title: $title
+      content: $content
+      excerpt: $excerpt
+    }) {
+      event {
+        id
+        databaseId
+        title
+        modified
+      }
+    }
+  }
+`
+
+const DELETE_EVENT = `
+  mutation DeleteEvent($id: ID!) {
+    deleteEvent(input: {
       id: $id
     }) {
       deletedId
@@ -844,6 +901,284 @@ async function updateChecklistACF(id: number, eventDate?: string, eventTimeStart
     console.log('ACF update response:', result);
   } catch (error) {
     console.error('Error updating ACF fields:', error);
+    throw error;
+  }
+}
+
+// Event Management Functions
+
+export interface CreateEventInput {
+  title: string
+  content?: string
+  excerpt?: string
+  eventDate: string
+  eventTime: string
+  eventEndDate?: string
+  locationName: string
+  address: string
+  eventType: 'festival' | 'party' | 'corporate' | 'community'
+  isFeatured?: boolean
+  maxAttendees?: number
+  registrationLink?: string
+  price?: string
+  featuredImageId?: number
+  eventImages?: number[] // Array of image IDs
+}
+
+export interface UpdateEventInput extends Partial<CreateEventInput> {
+  id: number
+}
+
+// Create new event
+export async function createEvent(input: CreateEventInput, token: string): Promise<number | null> {
+  try {
+    console.log('Creating event with input:', input);
+    
+    const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL || ''
+    
+    if (!wpUrl) {
+      throw new Error('NEXT_PUBLIC_WORDPRESS_URL is not configured');
+    }
+    
+    // First create the event post with ACF fields in the same request
+    const createUrl = `${wpUrl}/wp-json/wp/v2/events`;
+    console.log('Creating event at:', createUrl);
+    
+    const postPayload: any = {
+      title: input.title,
+      content: input.content || '',
+      excerpt: input.excerpt || '',
+      status: 'publish',
+      // Include ACF fields directly in the creation payload
+      event_date: input.eventDate,
+      event_time: input.eventTime,
+      event_end_date: input.eventEndDate || '',
+      location_name: input.locationName,
+      address: input.address,
+      event_type: input.eventType,
+      is_featured: input.isFeatured || false,
+      max_attendees: input.maxAttendees || '',
+      registration_link: input.registrationLink || '',
+      price: input.price || 'Free',
+      event_status: 'upcoming'
+    };
+    
+    // Add event images if provided
+    const inputAny = input as any;
+    for (let i = 1; i <= 6; i++) {
+      const imageKey = `event_image_${i}`;
+      if (inputAny[imageKey]) {
+        postPayload[imageKey] = inputAny[imageKey];
+      }
+    }
+    
+    if (input.featuredImageId) {
+      postPayload.featured_media = input.featuredImageId;
+    }
+    
+    console.log('Create payload:', JSON.stringify(postPayload, null, 2));
+    
+    const createResponse = await fetch(createUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(postPayload)
+    });
+    
+    console.log('Create response status:', createResponse.status);
+    
+    if (!createResponse.ok) {
+      const errorText = await createResponse.text();
+      console.error('Failed to create event:', createResponse.status, errorText);
+      throw new Error(`Failed to create event: ${createResponse.status} - ${errorText}`);
+    }
+    
+    const createResult = await createResponse.json();
+    const eventId = createResult.id;
+    console.log('Created event with ID:', eventId);
+    
+    return eventId
+  } catch (error) {
+    console.error('Error creating event:', error)
+    throw error;
+  }
+}
+
+// Update existing event
+export async function updateEvent(input: UpdateEventInput, token: string): Promise<boolean> {
+  try {
+    console.log('Updating event with input:', input);
+    
+    const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL || ''
+    
+    if (!wpUrl) {
+      throw new Error('NEXT_PUBLIC_WORDPRESS_URL is not configured');
+    }
+    
+    // Update the event post with ACF fields in the same request
+    const updateUrl = `${wpUrl}/wp-json/wp/v2/events/${input.id}`;
+    console.log('Updating event at:', updateUrl);
+    
+    const postPayload: any = {};
+    
+    if (input.title) postPayload.title = input.title;
+    if (input.content !== undefined) postPayload.content = input.content;
+    if (input.excerpt !== undefined) postPayload.excerpt = input.excerpt;
+    if (input.featuredImageId) postPayload.featured_media = input.featuredImageId;
+    
+    // Include ACF fields directly in the update payload
+    if (input.eventDate !== undefined) postPayload.event_date = input.eventDate;
+    if (input.eventTime !== undefined) postPayload.event_time = input.eventTime;
+    if (input.eventEndDate !== undefined) postPayload.event_end_date = input.eventEndDate || '';
+    if (input.locationName !== undefined) postPayload.location_name = input.locationName;
+    if (input.address !== undefined) postPayload.address = input.address;
+    if (input.eventType !== undefined) postPayload.event_type = input.eventType;
+    if (input.isFeatured !== undefined) postPayload.is_featured = input.isFeatured;
+    if (input.maxAttendees !== undefined) postPayload.max_attendees = input.maxAttendees || '';
+    if (input.registrationLink !== undefined) postPayload.registration_link = input.registrationLink || '';
+    if (input.price !== undefined) postPayload.price = input.price || 'Free';
+    
+    // Add event images if provided
+    const inputAny = input as any;
+    for (let i = 1; i <= 6; i++) {
+      const imageKey = `event_image_${i}`;
+      if (inputAny[imageKey] !== undefined) {
+        postPayload[imageKey] = inputAny[imageKey];
+      }
+    }
+    
+    console.log('Update payload:', JSON.stringify(postPayload, null, 2));
+    
+    const updateResponse = await fetch(updateUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(postPayload)
+    });
+    
+    if (!updateResponse.ok) {
+      const errorText = await updateResponse.text();
+      console.error('Failed to update event post:', updateResponse.status, errorText);
+      throw new Error(`Failed to update event: ${updateResponse.status} - ${errorText}`);
+    }
+    
+    console.log('Event updated successfully');
+    
+    return true
+  } catch (error) {
+    console.error('Error updating event:', error)
+    throw error;
+  }
+}
+
+// Delete event
+export async function deleteEvent(id: number, token: string): Promise<boolean> {
+  try {
+    console.log('Deleting event with ID:', id);
+    
+    const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL || ''
+    
+    if (!wpUrl) {
+      throw new Error('NEXT_PUBLIC_WORDPRESS_URL is not configured');
+    }
+    
+    const deleteUrl = `${wpUrl}/wp-json/wp/v2/events/${id}?force=true`;
+    console.log('Deleting event at:', deleteUrl);
+    
+    const deleteResponse = await fetch(deleteUrl, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    
+    console.log('Delete response status:', deleteResponse.status);
+    
+    if (!deleteResponse.ok) {
+      const errorText = await deleteResponse.text();
+      console.error('Failed to delete event:', deleteResponse.status, errorText);
+      throw new Error(`Failed to delete event: ${deleteResponse.status} - ${errorText}`);
+    }
+    
+    const deleteResult = await deleteResponse.json();
+    console.log('Successfully deleted event:', deleteResult);
+    
+    return true
+  } catch (error) {
+    console.error('Error deleting event:', error)
+    return false
+  }
+}
+
+// Helper function to update Event ACF fields
+async function updateEventACF(id: number, input: Partial<CreateEventInput>, token: string): Promise<void> {
+  try {
+    const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL || ''
+    
+    if (!wpUrl) {
+      throw new Error('NEXT_PUBLIC_WORDPRESS_URL is not configured');
+    }
+    
+    console.log('updateEventACF called with input:', JSON.stringify(input, null, 2));
+    
+    // ACF fields are updated directly via ACF REST API
+    const acfFields: any = {};
+    
+    if (input.eventDate !== undefined) acfFields.event_date = input.eventDate;
+    if (input.eventTime !== undefined) acfFields.event_time = input.eventTime;
+    if (input.eventEndDate !== undefined) acfFields.event_end_date = input.eventEndDate || '';
+    if (input.locationName !== undefined) acfFields.location_name = input.locationName;
+    if (input.address !== undefined) acfFields.address = input.address;
+    if (input.eventType !== undefined) acfFields.event_type = input.eventType;
+    if (input.isFeatured !== undefined) acfFields.is_featured = input.isFeatured;
+    if (input.maxAttendees !== undefined) acfFields.max_attendees = input.maxAttendees || '';
+    if (input.registrationLink !== undefined) acfFields.registration_link = input.registrationLink || '';
+    if (input.price !== undefined) acfFields.price = input.price || 'Free';
+    
+    // Handle event images
+    if (input.eventImages) {
+      const imageFields = ['event_image_1', 'event_image_2', 'event_image_3', 'event_image_4', 'event_image_5', 'event_image_6'];
+      input.eventImages.forEach((imageId, index) => {
+        if (index < 6) {
+          acfFields[imageFields[index]] = imageId;
+        }
+      });
+    }
+    
+    console.log('Updating event ACF fields for event ID:', id);
+    console.log('ACF fields to update:', JSON.stringify(acfFields, null, 2));
+    
+    // Use custom ACF endpoint
+    const url = `${wpUrl}/wp-json/hearthand/v1/event/${id}/acf`;
+    console.log('Sending request to:', url);
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(acfFields)
+    });
+    
+    console.log('ACF update response status:', response.status);
+    console.log('ACF update response headers:', Object.fromEntries(response.headers.entries()));
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('ACF update failed:', response.status, errorText);
+      throw new Error(`Failed to update event ACF fields: ${response.status} - ${errorText}`);
+    }
+    
+    const result = await response.json();
+    console.log('ACF update successful:', result);
+  } catch (error) {
+    console.error('Error updating event ACF fields:', error);
     throw error;
   }
 }

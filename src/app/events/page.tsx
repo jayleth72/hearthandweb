@@ -204,7 +204,8 @@ export default function EventsPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {pastEvents.map((event, index) => {
-                const eventType = (event.eventDetails?.eventType || 'community') as EventType
+                const rawEventType = event.eventDetails?.eventType || 'community'
+                const eventType = (Array.isArray(rawEventType) ? rawEventType[0] : rawEventType) as EventType
                 const eventImages = getEventImages(event)
                 return (
                   <motion.div
@@ -215,18 +216,23 @@ export default function EventsPage() {
                     className="bg-white rounded-2xl shadow-lg border border-orange-100 overflow-hidden hover:shadow-xl transition-shadow duration-300"
                   >
                     {/* Image Gallery */}
-                    {eventImages.length > 0 && (
-                      <div className={`grid gap-1 ${eventImages.length === 1 ? 'grid-cols-1' : eventImages.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
+                    {eventImages.length > 0 ? (
+                      <div className={`p-4 grid gap-3 ${eventImages.length === 1 ? 'grid-cols-1' : eventImages.length === 2 ? 'grid-cols-2' : eventImages.length <= 4 ? 'grid-cols-2' : 'grid-cols-3'}`}>
                         {eventImages.slice(0, 6).map((image, idx) => (
-                          <div key={idx} className="aspect-square relative">
+                          <div key={idx} className="aspect-square relative bg-gradient-to-br from-gray-100 to-gray-50 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200">
                             <Image
-                              src={image.sourceUrl}
+                              src={`/api/wp-image?url=${encodeURIComponent(image.sourceUrl)}`}
                               alt={image.altText || `${event.title} - Image ${idx + 1}`}
                               fill
-                              className="object-cover"
+                              className="object-cover hover:scale-105 transition-transform duration-300"
+                              unoptimized
                             />
                           </div>
                         ))}
+                      </div>
+                    ) : (
+                      <div className="h-48 bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center">
+                        <ImageIcon size={48} className="text-orange-300" />
                       </div>
                     )}
                     
@@ -284,7 +290,8 @@ export default function EventsPage() {
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {upcomingEvents.map((event, index) => {
-                const eventType = (event.eventDetails?.eventType || 'community') as EventType
+                const rawEventType = event.eventDetails?.eventType || 'community'
+                const eventType = (Array.isArray(rawEventType) ? rawEventType[0] : rawEventType) as EventType
                 return (
                   <motion.div
                     key={event.id}

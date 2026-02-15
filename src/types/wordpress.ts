@@ -70,27 +70,34 @@ export interface WordPressCategoriesResponse {
 
 // Event ACF Types
 export interface EventImage {
-  sourceUrl: string
-  altText: string
-  mediaDetails: {
-    width: number
-    height: number
+  node?: {
+    id?: string
+    sourceUrl: string
+    altText: string
+    databaseId?: number
+    mediaDetails?: {
+      width: number
+      height: number
+    }
   }
+  sourceUrl?: string
+  altText?: string
 }
 
 export interface EventACF {
   eventDate: string
   eventTime: string
+  endDate?: string
   eventEndDate?: string
   locationName: string
   address: string
   eventType: 'festival' | 'party' | 'corporate' | 'community'
   isFeatured?: boolean
-  eventStatus: 'upcoming' | 'past' | 'cancelled'
-  attendeeCount?: number
   maxAttendees?: number
   registrationLink?: string
   price?: string
+  eventStatus?: 'upcoming' | 'past' | 'cancelled'
+  attendeeCount?: number
   eventImage1?: EventImage
   eventImage2?: EventImage
   eventImage3?: EventImage

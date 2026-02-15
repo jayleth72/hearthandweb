@@ -184,7 +184,7 @@ function hh_register_event_acf_fields() {
                     'return_format' => 'Y-m-d',
                     'first_day' => 0,
                     'show_in_graphql' => 1,
-                    'graphql_field_name' => 'eventEndDate',
+                    'graphql_field_name' => 'endDate',
                 ),
                 array(
                     'key' => 'field_location_name',
@@ -538,3 +538,189 @@ function hh_events_graphql_notice() {
     }
 }
 add_action('admin_notices', 'hh_events_graphql_notice');
+/**
+ * Register ACF fields to REST API
+ * This allows updating ACF fields via the WordPress REST API
+ */
+function hh_register_acf_to_rest_api() {
+    // Make sure ACF is installed
+    if (!function_exists('acf_add_local_field_group')) {
+        return;
+    }
+    
+    // Get all ACF field groups
+    $field_groups = acf_get_field_groups(array(
+        'post_type' => 'event'
+    ));
+    
+    foreach ($field_groups as $group) {
+        // Get all fields in this group
+        $fields = acf_get_fields($group['key']);
+        
+        if ($fields) {
+            foreach ($fields as $field) {
+                // Register each field to the REST API
+                register_rest_field('event', $field['name'], array(
+                    'get_callback' => function($object) use ($field) {
+                        return get_field($field['name'], $object['id']);
+                    },
+                    'update_callback' => function($value, $object) use ($field) {
+                        $post_id = is_object($object) ? $object->ID : $object['id'];
+                        $result = update_field($field['name'], $value, $post_id);
+                        error_log("Updating ACF field {$field['name']} with value: " . print_r($value, true) . " for post $post_id - Result: " . ($result ? 'success' : 'failed'));
+                        return $result;
+                    },
+                    'schema' => null,
+                ));
+            }
+        }
+    }
+}
+add_action('rest_api_init', 'hh_register_acf_to_rest_api');
+
+/**
+ * Register custom REST API endpoint for updating event ACF fields
+ * This provides a dedicated endpoint for ACF field updates
+ */
+function hh_register_event_acf_endpoint() {
+    register_rest_route('hearthand/v1', '/event/(?P<id>\d+)/acf', array(
+        'methods' => 'POST',
+        'callback' => 'hh_update_event_acf_fields',
+        'permission_callback' => function($request) {
+            // Check if user is authenticated and can edit posts
+            return is_user_logged_in() && current_user_can('edit_posts');
+        },
+        'args' => array(
+            'id' => array(
+                'required' => true,
+                'validate_callback' => function($param, $request, $key) {
+                    return is_numeric($param);
+                }
+            ),
+        ),
+    ));
+}
+add_action('rest_api_init', 'hh_register_event_acf_endpoint');
+
+/**
+ * Callback function to update event ACF fields
+ */
+function hh_update_event_acf_fields($request) {
+    $event_id = (int) $request['id'];
+    $params = $request->get_json_params();
+    
+    error_log("=== EVENT ACF UPDATE START ===");
+    error_log("Event ID: $event_id");
+    error_log("Params: " . print_r($params, true));
+    
+    // Verify the post exists and is an event
+    $post = get_post($event_id);
+    if (!$post || $post->post_type !== 'event') {
+        error_log("ERROR: Invalid event ID or wrong post type");
+        return new WP_Error('invalid_event', 'Invalid event ID', array('status' => 404));
+    }
+    
+    // Check if ACF is available
+    if (!function_exists('update_field')) {
+        error_log("ERROR: ACF update_field function not available");
+        return new WP_Error('acf_not_available', 'ACF is not available', array('status' => 500));
+    }
+    
+    // Update ACF fields
+    $updated_fields = array();
+    $failed_fields = array();
+    
+    foreach ($params as $field_name => $field_value) {
+        error_log("Updating field: $field_name = " . print_r($field_value, true));
+        
+        // Update the field
+        $result = update_field($field_name, $field_value, $event_id);
+        
+        if ($result) {
+            $updated_fields[] = $field_name;
+            error_log("SUCCESS: Updated field $field_name");
+            
+            // Verify the update
+            $verify = get_field($field_name, $event_id);
+            error_log("Verification - field $field_name now has value: " . print_r($verify, true));
+        } else {
+            $failed_fields[] = $field_name;
+            error_log("FAILED: Could not update field $field_name");
+        }
+    }
+    
+    error_log("=== EVENT ACF UPDATE END ===");
+    
+    return rest_ensure_response(array(
+        'success' => true,
+        'event_id' => $event_id,
+        'updated_fields' => $updated_fields,
+        'failed_fields' => $failed_fields,
+        'message' => 'ACF fields processed'
+    ));
+}
+
+/**
+ * Hook into WordPress REST API insert/update to automatically save ACF fields
+ * This allows ACF fields to be saved when creating or updating events via REST API
+ */
+function hh_save_event_acf_fields_on_rest($post, $request, $creating) {
+    // Only process event post type
+    if ($post->post_type !== 'event') {
+        return;
+    }
+    
+    error_log("=== SAVE EVENT ACF FIELDS (REST) ===");
+    error_log("Post ID: " . $post->ID);
+    error_log("Creating: " . ($creating ? 'yes' : 'no'));
+    
+    // Get the request body
+    $params = $request->get_json_params();
+    if (!$params) {
+        $params = $request->get_body_params();
+    }
+    
+    error_log("Request params: " . print_r($params, true));
+    
+    // Check if ACF is available
+    if (!function_exists('update_field')) {
+        error_log("ERROR: ACF not available");
+        return;
+    }
+    
+    // List of ACF field names we expect
+    $acf_fields = array(
+        'event_date',
+        'event_time',
+        'event_end_date',
+        'location_name',
+        'address',
+        'event_type',
+        'is_featured',
+        'max_attendees',
+        'registration_link',
+        'price',
+        'event_status',
+        'event_image_1',
+        'event_image_2',
+        'event_image_3',
+        'event_image_4',
+        'event_image_5',
+        'event_image_6',
+        'attendee_count'
+    );
+    
+    // Update each ACF field if present in the request
+    foreach ($acf_fields as $field_name) {
+        if (isset($params[$field_name])) {
+            $value = $params[$field_name];
+            error_log("Updating ACF field: $field_name = " . print_r($value, true));
+            $result = update_field($field_name, $value, $post->ID);
+            error_log("Update result for $field_name: " . ($result ? 'success' : 'failed'));
+        }
+    }
+    
+    error_log("=== SAVE EVENT ACF FIELDS END ===");
+}
+add_action('rest_insert_event', 'hh_save_event_acf_fields_on_rest', 10, 3);
+add_action('rest_after_insert_event', 'hh_save_event_acf_fields_on_rest', 10, 3);

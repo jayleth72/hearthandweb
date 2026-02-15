@@ -135,9 +135,44 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// DELETE - Delete a checklist
+// DELETE - Delete a checklist (Admin only)
 export async function DELETE(request: NextRequest) {
   try {
+    // Check authentication and admin role
+    const token = request.cookies.get('wp_auth_token')?.value;
+    
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
+    // Validate token and get user info
+    const WORDPRESS_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+    const userResponse = await fetch(`${WORDPRESS_URL}/wp-json/wp/v2/users/me`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!userResponse.ok) {
+      return NextResponse.json(
+        { error: 'Invalid authentication' },
+        { status: 401 }
+      );
+    }
+
+    const userData = await userResponse.json();
+    
+    // Check if user is an administrator
+    if (!userData.roles?.includes('administrator')) {
+      return NextResponse.json(
+        { error: 'Administrator access required' },
+        { status: 403 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     

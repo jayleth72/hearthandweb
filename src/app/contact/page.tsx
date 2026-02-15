@@ -20,13 +20,13 @@ export default function Contact() {
     {
       icon: MapPin,
       title: 'Service Area',
-      details: 'Mary Valley QLD and Surrounding Communities',
+      details: 'Sunshine Coast, Gympie, Mary Valley and surrounding communities',
       action: null
     },
     {
       icon: Clock,
       title: 'Availability',
-      details: 'Weekends and Evenings\nAdvance booking recommended',
+      details: 'Flexible and available 7 days a week\nAdvance bookings recommended',
       action: null
     }
   ]

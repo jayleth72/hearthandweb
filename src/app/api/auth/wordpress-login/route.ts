@@ -32,6 +32,20 @@ export async function POST(request: NextRequest) {
 
     const data = await response.json();
     
+    // Fetch user details including roles from WordPress
+    const userResponse = await fetch(`${WORDPRESS_URL}/wp-json/wp/v2/users/me`, {
+      headers: {
+        'Authorization': `Bearer ${data.token}`,
+      },
+    });
+
+    let userRoles: string[] = [];
+    if (userResponse.ok) {
+      const userData = await userResponse.json();
+      userRoles = userData.roles || [];
+      console.log('User roles from WordPress:', userRoles);
+    }
+    
     // Set HTTP-only cookie with JWT token
     const res = NextResponse.json({
       success: true,
@@ -40,13 +54,17 @@ export async function POST(request: NextRequest) {
         email: data.user_email,
         displayName: data.user_display_name,
         nicename: data.user_nicename,
+        roles: userRoles,
       },
     });
 
     // Set secure HTTP-only cookie
+    // Detect if we're using HTTPS (production or dev with --experimental-https)
+    const isHttps = request.url.startsWith('https://') || process.env.NODE_ENV === 'production';
+    
     res.cookies.set('wp_auth_token', data.token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isHttps,
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 7, // 7 days
       path: '/',
