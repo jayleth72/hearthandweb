@@ -23,7 +23,7 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/wp-content/uploads/**',
       },
-      // Instagram CDN domains
+      // Instagram CDN domains (all possible patterns)
       {
         protocol: 'https',
         hostname: 'scontent.cdninstagram.com',
@@ -44,6 +44,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'instagram.*.fbcdn.net',
       },
+      {
+        protocol: 'https',
+        hostname: 'scontent-*.xx.fbcdn.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'video-*.cdninstagram.com',
+      },
       // API proxy route
       {
         protocol: 'https',
@@ -53,7 +61,7 @@ const nextConfig: NextConfig = {
       },
     ],
     dangerouslyAllowSVG: true,
-    unoptimized: true, // Disable optimization for proxied images
+    unoptimized: false, // Enable optimization
   },
 };
 
