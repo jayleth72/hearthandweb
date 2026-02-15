@@ -16,10 +16,16 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/wp-content/uploads/**',
       },
-      // Production WordPress
+      // Production WordPress on Flywheel
+      {
+        protocol: 'http',
+        hostname: 'cmshandheart.flywheelsites.com',
+        port: '',
+        pathname: '/wp-content/uploads/**',
+      },
       {
         protocol: 'https',
-        hostname: 'handheartecobodyart.com',
+        hostname: 'cmshandheart.flywheelsites.com',
         port: '',
         pathname: '/wp-content/uploads/**',
       },
