@@ -14,13 +14,36 @@ export async function GET() {
   try {
     const accessToken = process.env.INSTAGRAM_ACCESS_TOKEN;
     const userId = process.env.INSTAGRAM_USER_ID;
+    const envDiagnostics = {
+      hasAccessToken: Boolean(accessToken),
+      hasUserId: Boolean(userId),
+      nodeEnv: process.env.NODE_ENV || 'unknown',
+      onNetlify: Boolean(process.env.NETLIFY),
+    };
   
     console.log('Access Token:', accessToken ? `${accessToken.substring(0, 20)}...` : 'NOT FOUND');
     console.log('User ID:', userId || 'NOT FOUND');
   
     if (!accessToken) {
       console.error('Instagram access token not found');
-      return NextResponse.json({ error: 'Instagram access token not configured' }, { status: 500 });
+      return NextResponse.json(
+        {
+          error: 'Instagram access token not configured',
+          diagnostics: envDiagnostics,
+        },
+        { status: 500 }
+      );
+    }
+
+    if (!userId) {
+      console.error('Instagram user ID not found');
+      return NextResponse.json(
+        {
+          error: 'Instagram user ID not configured',
+          diagnostics: envDiagnostics,
+        },
+        { status: 500 }
+      );
     }
 
     const fields = 'id,media_type,media_url,thumbnail_url,caption,permalink,timestamp';
